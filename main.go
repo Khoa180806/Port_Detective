@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/Khoa180806/Port_Detective/cmd"
 
 func main() {
-	fmt.Println("Port Detective — Find who's using your port")
+	cmd.Execute()
 }
