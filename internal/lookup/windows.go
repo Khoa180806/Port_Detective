@@ -6,6 +6,7 @@ package lookup
 import (
 	"bytes"
 	"encoding/csv"
+	"errors"
 	"fmt"
 	"os/exec"
 	"strconv"
@@ -57,6 +58,10 @@ func (s *WindowsStrategy) KillProcess(pid int) error {
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	if err := cmd.Run(); err != nil {
+		err = CheckPermissionError(err, stderr.String())
+		if errors.Is(err, ErrPermissionDenied) {
+			return err
+		}
 		return fmt.Errorf("không thể kill PID %d: %s", pid, stderr.String())
 	}
 	return nil

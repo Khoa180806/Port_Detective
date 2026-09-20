@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -34,7 +35,12 @@ Bạn có thể dùng cờ --force (-f) để bỏ qua câu hỏi xác nhận.`,
 
 		procs, err := lookup.FindProcessByPort(port)
 		if err != nil {
-			fmt.Printf("Lỗi khi tra cứu: %v\n", err)
+			if errors.Is(err, lookup.ErrPermissionDenied) {
+				color.Red("Lỗi: Không đủ quyền truy cập để lấy thông tin chi tiết.")
+				color.Yellow("Gợi ý: Hãy thử chạy lại lệnh dưới quyền Administrator (hoặc sudo trên Linux/macOS).")
+			} else {
+				fmt.Printf("Lỗi khi tra cứu: %v\n", err)
+			}
 			os.Exit(2)
 		}
 
@@ -73,7 +79,11 @@ Bạn có thể dùng cờ --force (-f) để bỏ qua câu hỏi xác nhận.`,
 			fmt.Printf("Đang kill PID %d (%s)... ", p.PID, p.Name)
 			err := lookup.KillProcess(p.PID)
 			if err != nil {
-				color.Red("THẤT BẠI: %v", err)
+				if errors.Is(err, lookup.ErrPermissionDenied) {
+					color.Red("THẤT BẠI: Không đủ quyền (Permission Denied). Cần quyền Admin/sudo.")
+				} else {
+					color.Red("THẤT BẠI: %v", err)
+				}
 				hasError = true
 			} else {
 				color.Green("THÀNH CÔNG")

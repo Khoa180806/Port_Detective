@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -30,7 +31,12 @@ var checkCmd = &cobra.Command{
 			if jsonOutput {
 				fmt.Printf(`{"error": "%v"}`+"\n", err)
 			} else {
-				fmt.Printf("Lỗi khi tra cứu: %v\n", err)
+				if errors.Is(err, lookup.ErrPermissionDenied) {
+					fmt.Println("Lỗi: Không đủ quyền truy cập để lấy thông tin chi tiết.")
+					fmt.Println("Gợi ý: Hãy thử chạy lại lệnh dưới quyền Administrator (hoặc sudo trên Linux/macOS).")
+				} else {
+					fmt.Printf("Lỗi khi tra cứu: %v\n", err)
+				}
 			}
 			os.Exit(2)
 		}

@@ -5,6 +5,7 @@ package lookup
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os/exec"
 	"strconv"
@@ -24,10 +25,14 @@ func (s *DarwinStrategy) FindProcessByPort(port int) ([]process.ProcessInfo, err
 	cmd := exec.Command("lsof", "-i", fmt.Sprintf(":%d", port), "-P", "-n")
 	output, err := cmd.Output()
 	if err != nil {
-		// lsof trả về exit code 1 nếu không tìm thấy tiến trình nào,
-		// ta cần bắt trường hợp này để trả về mảng rỗng thay vì báo lỗi hệ thống.
+		// lsof trả về exit code 1 nếu không tìm thấy tiến trình nào
 		if exitError, ok := err.(*exec.ExitError); ok && exitError.ExitCode() == 1 {
 			return nil, nil
+		}
+		
+		err = CheckPermissionError(err, "")
+		if errors.Is(err, ErrPermissionDenied) {
+			return nil, err
 		}
 		return nil, fmt.Errorf("lỗi khi chạy lsof: %v", err)
 	}
@@ -40,6 +45,10 @@ func (s *DarwinStrategy) KillProcess(pid int) error {
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	if err := cmd.Run(); err != nil {
+		err = CheckPermissionError(err, stderr.String())
+		if errors.Is(err, ErrPermissionDenied) {
+			return err
+		}
 		return fmt.Errorf("không thể kill PID %d: %s", pid, stderr.String())
 	}
 	return nil

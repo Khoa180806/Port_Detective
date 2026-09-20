@@ -5,6 +5,7 @@ package lookup
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -32,6 +33,10 @@ func (s *LinuxStrategy) FindProcessByPort(port int) ([]process.ProcessInfo, erro
 	// Ưu tiên 2: Fallback parse trực tiếp /proc (không cần cài thêm tool)
 	procs, err = findViaProcFS(port)
 	if err != nil {
+		err = CheckPermissionError(err, "")
+		if errors.Is(err, ErrPermissionDenied) {
+			return nil, err
+		}
 		return nil, fmt.Errorf("cả lsof và procfs đều thất bại: %v", err)
 	}
 
@@ -43,6 +48,10 @@ func (s *LinuxStrategy) KillProcess(pid int) error {
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	if err := cmd.Run(); err != nil {
+		err = CheckPermissionError(err, stderr.String())
+		if errors.Is(err, ErrPermissionDenied) {
+			return err
+		}
 		return fmt.Errorf("không thể kill PID %d: %s", pid, stderr.String())
 	}
 	return nil
