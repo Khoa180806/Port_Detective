@@ -31,3 +31,6 @@ Thumbs.db
 
 # Build output
 dist/
+
+# Local agent task tracking (kept local, not pushed to remote)
+tasks/
