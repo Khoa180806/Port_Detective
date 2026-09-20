@@ -5,25 +5,36 @@ import (
 	"strings"
 
 	"github.com/Khoa180806/Port_Detective/internal/process"
+	"github.com/fatih/color"
 )
 
-// FormatText trả về chuỗi định dạng văn bản trực quan cho một tiến trình.
+var (
+	colorPort     = color.New(color.FgCyan, color.Bold)
+	colorPID      = color.New(color.FgRed, color.Bold)
+	colorProcess  = color.New(color.FgYellow)
+	colorCommand  = color.New(color.FgHiBlack) // Xám đậm
+	colorProtocol = color.New(color.FgGreen)
+)
+
+// FormatText trả về chuỗi định dạng văn bản trực quan cho một tiến trình, có màu sắc.
 func FormatText(p *process.ProcessInfo) string {
 	if p == nil {
 		return "No process information available."
 	}
 
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("Port %d is occupied by:\n", p.Port))
-	sb.WriteString(fmt.Sprintf("  PID:      %d\n", p.PID))
-	sb.WriteString(fmt.Sprintf("  Process:  %s\n", p.Name))
-	sb.WriteString(fmt.Sprintf("  Command:  %s\n", p.Command))
-	sb.WriteString(fmt.Sprintf("  Protocol: %s", p.Protocol))
+	portStr := colorPort.Sprintf("%d", p.Port)
+	sb.WriteString(fmt.Sprintf("Port %s is occupied by:\n", portStr))
+	
+	sb.WriteString(fmt.Sprintf("  PID:      %s\n", colorPID.Sprintf("%d", p.PID)))
+	sb.WriteString(fmt.Sprintf("  Process:  %s\n", colorProcess.Sprintf("%s", p.Name)))
+	sb.WriteString(fmt.Sprintf("  Command:  %s\n", colorCommand.Sprintf("%s", p.Command)))
+	sb.WriteString(fmt.Sprintf("  Protocol: %s", colorProtocol.Sprintf("%s", p.Protocol)))
 
 	return sb.String()
 }
 
-// FormatTextMultiple trả về chuỗi định dạng văn bản trực quan cho danh sách các tiến trình.
+// FormatTextMultiple trả về chuỗi định dạng văn bản có màu sắc cho danh sách các tiến trình.
 func FormatTextMultiple(ps []process.ProcessInfo) string {
 	if len(ps) == 0 {
 		return "No processes found."
@@ -33,19 +44,18 @@ func FormatTextMultiple(ps []process.ProcessInfo) string {
 		return FormatText(&ps[0])
 	}
 
-	// Trường hợp có nhiều tiến trình cùng chiếm 1 port (SO_REUSEPORT) hoặc list scan
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("Found %d processes:\n", len(ps)))
+	sb.WriteString(color.New(color.FgHiWhite, color.Bold).Sprintf("Found %d processes:\n", len(ps)))
 
 	for i, p := range ps {
 		if i > 0 {
-			sb.WriteString("\n--------------------------------------------------\n")
+			sb.WriteString(color.HiBlackString("\n--------------------------------------------------\n"))
 		}
-		sb.WriteString(fmt.Sprintf("  Port:     %d\n", p.Port))
-		sb.WriteString(fmt.Sprintf("  PID:      %d\n", p.PID))
-		sb.WriteString(fmt.Sprintf("  Process:  %s\n", p.Name))
-		sb.WriteString(fmt.Sprintf("  Command:  %s\n", p.Command))
-		sb.WriteString(fmt.Sprintf("  Protocol: %s", p.Protocol))
+		sb.WriteString(fmt.Sprintf("  Port:     %s\n", colorPort.Sprintf("%d", p.Port)))
+		sb.WriteString(fmt.Sprintf("  PID:      %s\n", colorPID.Sprintf("%d", p.PID)))
+		sb.WriteString(fmt.Sprintf("  Process:  %s\n", colorProcess.Sprintf("%s", p.Name)))
+		sb.WriteString(fmt.Sprintf("  Command:  %s\n", colorCommand.Sprintf("%s", p.Command)))
+		sb.WriteString(fmt.Sprintf("  Protocol: %s", colorProtocol.Sprintf("%s", p.Protocol)))
 	}
 
 	return sb.String()

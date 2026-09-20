@@ -9,6 +9,7 @@ import (
 
 	"github.com/Khoa180806/Port_Detective/internal/lookup"
 	"github.com/Khoa180806/Port_Detective/internal/output"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -43,7 +44,7 @@ Bạn có thể dùng cờ --force (-f) để bỏ qua câu hỏi xác nhận.`,
 		}
 
 		// Hiển thị thông tin tiến trình
-		fmt.Println("CẢNH BÁO: Phát hiện các tiến trình sau đang chiếm dụng port:")
+		color.New(color.FgRed, color.Bold).Println("CẢNH BÁO: Phát hiện các tiến trình sau đang chiếm dụng port:")
 		fmt.Println(output.FormatTextMultiple(procs))
 		fmt.Println()
 
@@ -72,10 +73,10 @@ Bạn có thể dùng cờ --force (-f) để bỏ qua câu hỏi xác nhận.`,
 			fmt.Printf("Đang kill PID %d (%s)... ", p.PID, p.Name)
 			err := lookup.KillProcess(p.PID)
 			if err != nil {
-				fmt.Printf("THẤT BẠI: %v\n", err)
+				color.Red("THẤT BẠI: %v", err)
 				hasError = true
 			} else {
-				fmt.Println("THÀNH CÔNG")
+				color.Green("THÀNH CÔNG")
 			}
 		}
 
