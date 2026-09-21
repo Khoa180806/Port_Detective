@@ -26,11 +26,11 @@ Active Connections
 	expectedProtocols := []string{"tcp", "udp"}
 
 	if !reflect.DeepEqual(pids, expectedPids) {
-		t.Errorf("PIDs không khớp. Nhận được: %v, mong đợi: %v", pids, expectedPids)
+		t.Errorf("PIDs mismatch. Got: %v, expected: %v", pids, expectedPids)
 	}
 
 	if !reflect.DeepEqual(protocols, expectedProtocols) {
-		t.Errorf("Protocols không khớp. Nhận được: %v, mong đợi: %v", protocols, expectedProtocols)
+		t.Errorf("Protocols mismatch. Got: %v, expected: %v", protocols, expectedProtocols)
 	}
 }
 
@@ -44,6 +44,6 @@ Active Connections
 	pids, protocols := parseNetstatForPort(sampleOutput, 8080)
 
 	if len(pids) != 0 || len(protocols) != 0 {
-		t.Errorf("Kỳ vọng trả về mảng rỗng khi port không tồn tại, nhận được: %v, %v", pids, protocols)
+		t.Errorf("expected empty slices when port is not found, got: %v, %v", pids, protocols)
 	}
 }

@@ -19,12 +19,12 @@ func TestProcessInfo_JSONMarshal(t *testing.T) {
 
 	data, err := json.Marshal(proc)
 	if err != nil {
-		t.Fatalf("Không thể marshal ProcessInfo sang JSON: %v", err)
+		t.Fatalf("failed to marshal ProcessInfo to JSON: %v", err)
 	}
 
 	expectedJSON := `{"pid":12345,"name":"node.exe","command":"node server.js","port":8080,"protocol":"tcp"}`
 	if string(data) != expectedJSON {
-		t.Errorf("Kết quả JSON không đúng định dạng mong đợi.\nNhận được: %s\nMong đợi:  %s", string(data), expectedJSON)
+		t.Errorf("JSON output does not match expected format.\nGot:      %s\nExpected: %s", string(data), expectedJSON)
 	}
 }
 
@@ -34,7 +34,7 @@ func TestProcessInfo_JSONUnmarshal(t *testing.T) {
 	var proc process.ProcessInfo
 	err := json.Unmarshal([]byte(inputJSON), &proc)
 	if err != nil {
-		t.Fatalf("Không thể unmarshal JSON thành ProcessInfo: %v", err)
+		t.Fatalf("failed to unmarshal JSON to ProcessInfo: %v", err)
 	}
 
 	expected := process.ProcessInfo{
@@ -46,7 +46,7 @@ func TestProcessInfo_JSONUnmarshal(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(proc, expected) {
-		t.Errorf("Dữ liệu sau khi unmarshal không khớp.\nNhận được: %+v\nMong đợi:  %+v", proc, expected)
+		t.Errorf("unmarshaled data mismatch.\nGot:      %+v\nExpected: %+v", proc, expected)
 	}
 }
 
@@ -54,11 +54,11 @@ func TestProcessInfo_ZeroValues(t *testing.T) {
 	var proc process.ProcessInfo
 	data, err := json.Marshal(proc)
 	if err != nil {
-		t.Fatalf("Lỗi khi marshal struct rỗng: %v", err)
+		t.Fatalf("failed to marshal empty struct: %v", err)
 	}
 
 	expectedJSON := `{"pid":0,"name":"","command":"","port":0,"protocol":""}`
 	if string(data) != expectedJSON {
-		t.Errorf("Kết quả JSON cho struct rỗng không khớp.\nNhận được: %s\nMong đợi:  %s", string(data), expectedJSON)
+		t.Errorf("JSON output for empty struct mismatch.\nGot:      %s\nExpected: %s", string(data), expectedJSON)
 	}
 }

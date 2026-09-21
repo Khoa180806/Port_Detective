@@ -8,7 +8,7 @@ import (
 	"github.com/Khoa180806/Port_Detective/internal/process"
 )
 
-// mockStrategy là một đối tượng giả lập (mock) cho PortLookupStrategy
+// mockStrategy is a mock implementation of PortLookupStrategy for testing.
 type mockStrategy struct{}
 
 func (m *mockStrategy) FindProcessByPort(port int) ([]process.ProcessInfo, error) {
@@ -17,57 +17,55 @@ func (m *mockStrategy) FindProcessByPort(port int) ([]process.ProcessInfo, error
 			{PID: 1234, Name: "mock.exe", Port: 8080, Protocol: "tcp"},
 		}, nil
 	}
-	return nil, errors.New("port không tìm thấy")
+	return nil, errors.New("port not found")
 }
 
 func (m *mockStrategy) KillProcess(pid int) error {
 	if pid == 1234 {
 		return nil
 	}
-	return errors.New("pid không tồn tại")
+	return errors.New("pid not found")
 }
 
 func TestDispatch_FindProcessByPort(t *testing.T) {
-	// Giữ lại state cũ để hoàn trả sau khi test
+	// Preserve old strategy and restore after test completion
 	oldStrategy := lookup.OSStrategy
 	defer func() { lookup.OSStrategy = oldStrategy }()
 
-	// Gán strategy thành mock
 	lookup.OSStrategy = &mockStrategy{}
 
-	// Test case thành công
+	// Successful lookup
 	procs, err := lookup.FindProcessByPort(8080)
 	if err != nil {
-		t.Fatalf("Lỗi không mong đợi: %v", err)
+		t.Fatalf("unexpected error: %v", err)
 	}
 	if len(procs) != 1 || procs[0].PID != 1234 {
-		t.Errorf("Kết quả trả về không khớp mong đợi: %+v", procs)
+		t.Errorf("unexpected process result: %+v", procs)
 	}
 
-	// Test case thất bại
+	// Failed lookup
 	_, err = lookup.FindProcessByPort(9999)
 	if err == nil {
-		t.Errorf("Mong đợi một lỗi nhưng lại không có lỗi")
+		t.Errorf("expected error, got nil")
 	}
 }
 
 func TestDispatch_KillProcess(t *testing.T) {
-	// Giữ lại state cũ
 	oldStrategy := lookup.OSStrategy
 	defer func() { lookup.OSStrategy = oldStrategy }()
 
 	lookup.OSStrategy = &mockStrategy{}
 
-	// Test case thành công
+	// Successful kill
 	err := lookup.KillProcess(1234)
 	if err != nil {
-		t.Fatalf("Lỗi không mong đợi khi kill pid hợp lệ: %v", err)
+		t.Fatalf("unexpected error killing valid PID: %v", err)
 	}
 
-	// Test case thất bại
+	// Failed kill
 	err = lookup.KillProcess(9999)
 	if err == nil {
-		t.Errorf("Mong đợi một lỗi khi kill pid không hợp lệ")
+		t.Errorf("expected error killing invalid PID, got nil")
 	}
 }
 
@@ -75,17 +73,17 @@ func TestDispatch_NilStrategy(t *testing.T) {
 	oldStrategy := lookup.OSStrategy
 	defer func() { lookup.OSStrategy = oldStrategy }()
 
-	// Set strategy = nil để test lỗi ErrNotSupported
+	// Set strategy to nil to verify ErrNotSupported
 	lookup.OSStrategy = nil
 
 	_, err := lookup.FindProcessByPort(8080)
 	if !errors.Is(err, lookup.ErrNotSupported) {
-		t.Errorf("Mong đợi ErrNotSupported, nhận được: %v", err)
+		t.Errorf("expected ErrNotSupported, got: %v", err)
 	}
 
 	err = lookup.KillProcess(1234)
 	if !errors.Is(err, lookup.ErrNotSupported) {
-		t.Errorf("Mong đợi ErrNotSupported, nhận được: %v", err)
+		t.Errorf("expected ErrNotSupported, got: %v", err)
 	}
 }
 

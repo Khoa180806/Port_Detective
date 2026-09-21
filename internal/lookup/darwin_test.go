@@ -18,7 +18,7 @@ node    54321 admin   12u  IPv4 0xabcdef1234567890      0t0  UDP localhost:8080
 	procs := parseDarwinLsofOutput(sampleOutput, 8080)
 
 	if len(procs) != 2 {
-		t.Fatalf("Mong đợi 2 process, nhận được: %d", len(procs))
+		t.Fatalf("expected 2 processes, got: %d", len(procs))
 	}
 
 	expected1 := process.ProcessInfo{
@@ -29,7 +29,7 @@ node    54321 admin   12u  IPv4 0xabcdef1234567890      0t0  UDP localhost:8080
 		Protocol: "tcp",
 	}
 	if !reflect.DeepEqual(procs[0], expected1) {
-		t.Errorf("Process 1 không khớp.\nNhận được: %+v\nMong đợi: %+v", procs[0], expected1)
+		t.Errorf("Process 1 mismatch.\nGot:      %+v\nExpected: %+v", procs[0], expected1)
 	}
 
 	expected2 := process.ProcessInfo{
@@ -40,7 +40,7 @@ node    54321 admin   12u  IPv4 0xabcdef1234567890      0t0  UDP localhost:8080
 		Protocol: "udp",
 	}
 	if !reflect.DeepEqual(procs[1], expected2) {
-		t.Errorf("Process 2 không khớp.\nNhận được: %+v\nMong đợi: %+v", procs[1], expected2)
+		t.Errorf("Process 2 mismatch.\nGot:      %+v\nExpected: %+v", procs[1], expected2)
 	}
 }
 
@@ -50,6 +50,6 @@ func TestParseDarwinLsofOutput_Empty(t *testing.T) {
 	procs := parseDarwinLsofOutput(sampleOutput, 8080)
 
 	if len(procs) != 0 {
-		t.Fatalf("Mong đợi 0 process, nhận được: %d", len(procs))
+		t.Fatalf("expected 0 processes, got: %d", len(procs))
 	}
 }
