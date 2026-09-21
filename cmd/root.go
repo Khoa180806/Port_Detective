@@ -15,7 +15,7 @@ var rootCmd = &cobra.Command{
 	Use:     "port-detective",
 	Short:   i18n.T("root.short"),
 	Long:    i18n.T("root.long"),
-	Version: "1.0.0",
+	Version: "1.1.0",
 }
 
 // updateCommandDescriptions updates descriptions for root and all registered subcommands.
