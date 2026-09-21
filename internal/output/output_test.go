@@ -80,6 +80,14 @@ func TestFormatText(t *testing.T) {
 			t.Errorf("Text output missing expected line: %s\nActual output:\n%s", line, out)
 		}
 	}
+
+	// Test Vietnamese text format
+	_ = i18n.SetLang("vi")
+	outVI := output.FormatText(&sampleProcess)
+	if !strings.Contains(outVI, "Port 8080 đang bị chiếm bởi:") {
+		t.Errorf("Vietnamese text output missing expected header. Got:\n%s", outVI)
+	}
+	_ = i18n.SetLang("en")
 }
 
 func TestFormatText_Nil(t *testing.T) {
@@ -111,6 +119,14 @@ func TestFormatTextMultiple(t *testing.T) {
 	if !strings.Contains(out, "PID:      9999") || !strings.Contains(out, "Process:  node") {
 		t.Errorf("Text output missing second process information. Got:\n%s", out)
 	}
+
+	// Test Vietnamese text format for multiple processes
+	_ = i18n.SetLang("vi")
+	outVI := output.FormatTextMultiple(ps)
+	if !strings.Contains(outVI, "Tìm thấy 2 process") {
+		t.Errorf("Vietnamese multiple text output missing title. Got:\n%s", outVI)
+	}
+	_ = i18n.SetLang("en")
 }
 
 func TestFormatTextMultiple_Empty(t *testing.T) {
@@ -119,4 +135,11 @@ func TestFormatTextMultiple_Empty(t *testing.T) {
 	if !strings.Contains(out, "No processes found") {
 		t.Errorf("Text output for empty slice invalid. Got: %s", out)
 	}
+
+	_ = i18n.SetLang("vi")
+	outVI := output.FormatTextMultiple([]process.ProcessInfo{})
+	if !strings.Contains(outVI, "Không tìm thấy process nào") {
+		t.Errorf("Vietnamese empty text output invalid. Got: %s", outVI)
+	}
+	_ = i18n.SetLang("en")
 }

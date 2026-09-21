@@ -61,9 +61,9 @@ Dải port hợp lệ là từ 1 đến 65535. Để bảo vệ hệ thống, gi
 	"scan.permission_hint":       "Gợi ý: Hãy chạy lại công cụ với quyền Administrator/sudo để có danh sách đầy đủ nhất.",
 
 	// Output format
-	"output.occupied_by":         "Port %s is occupied by:\n",
-	"output.found_processes":     "Found %d processes:\n",
-	"output.no_processes":        "No processes found.",
+	"output.occupied_by":         "Port %s đang bị chiếm bởi:\n",
+	"output.found_processes":     "Tìm thấy %d process:\n",
+	"output.no_processes":        "Không tìm thấy process nào.",
 	"output.no_info":             "Không có thông tin tiến trình.",
 
 	// Internal errors

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/Khoa180806/Port_Detective/internal/i18n"
 	"github.com/Khoa180806/Port_Detective/internal/lookup"
 	"github.com/Khoa180806/Port_Detective/internal/process"
 )
@@ -17,14 +18,14 @@ func (m *mockStrategy) FindProcessByPort(port int) ([]process.ProcessInfo, error
 			{PID: 1234, Name: "mock.exe", Port: 8080, Protocol: "tcp"},
 		}, nil
 	}
-	return nil, errors.New("port not found")
+	return nil, errors.New(lookup.ErrProcessNotFoundMessage())
 }
 
 func (m *mockStrategy) KillProcess(pid int) error {
 	if pid == 1234 {
 		return nil
 	}
-	return errors.New("pid not found")
+	return errors.New(lookup.ErrKillFailedMessage())
 }
 
 func TestDispatch_FindProcessByPort(t *testing.T) {
@@ -88,16 +89,36 @@ func TestDispatch_NilStrategy(t *testing.T) {
 }
 
 func TestLocalizedErrorMessages(t *testing.T) {
-	if msg := lookup.ErrPermissionDeniedMessage(); msg == "" {
-		t.Errorf("expected non-empty ErrPermissionDeniedMessage")
+	// English tests
+	_ = i18n.SetLang("en")
+	if msg := lookup.ErrPermissionDeniedMessage(); msg != "permission denied (try running with Administrator or sudo privileges)" {
+		t.Errorf("unexpected EN ErrPermissionDeniedMessage: %s", msg)
 	}
-	if msg := lookup.ErrProcessNotFoundMessage(); msg == "" {
-		t.Errorf("expected non-empty ErrProcessNotFoundMessage")
+	if msg := lookup.ErrProcessNotFoundMessage(); msg != "process not found" {
+		t.Errorf("unexpected EN ErrProcessNotFoundMessage: %s", msg)
 	}
-	if msg := lookup.ErrKillFailedMessage(); msg == "" {
-		t.Errorf("expected non-empty ErrKillFailedMessage")
+	if msg := lookup.ErrKillFailedMessage(); msg != "failed to kill process" {
+		t.Errorf("unexpected EN ErrKillFailedMessage: %s", msg)
 	}
-	if msg := lookup.ErrNotSupportedMessage(); msg == "" {
-		t.Errorf("expected non-empty ErrNotSupportedMessage")
+	if msg := lookup.ErrNotSupportedMessage(); msg != "operation not supported on this operating system" {
+		t.Errorf("unexpected EN ErrNotSupportedMessage: %s", msg)
 	}
+
+	// Vietnamese tests
+	_ = i18n.SetLang("vi")
+	if msg := lookup.ErrPermissionDeniedMessage(); msg != "không đủ quyền truy cập (thử chạy công cụ với quyền Administrator hoặc sudo)" {
+		t.Errorf("unexpected VI ErrPermissionDeniedMessage: %s", msg)
+	}
+	if msg := lookup.ErrProcessNotFoundMessage(); msg != "không tìm thấy process" {
+		t.Errorf("unexpected VI ErrProcessNotFoundMessage: %s", msg)
+	}
+	if msg := lookup.ErrKillFailedMessage(); msg != "không thể kill process" {
+		t.Errorf("unexpected VI ErrKillFailedMessage: %s", msg)
+	}
+	if msg := lookup.ErrNotSupportedMessage(); msg != "không được hỗ trợ trên hệ điều hành này" {
+		t.Errorf("unexpected VI ErrNotSupportedMessage: %s", msg)
+	}
+
+	// Reset to English
+	_ = i18n.SetLang("en")
 }
