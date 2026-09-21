@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"sort"
@@ -44,6 +45,7 @@ Dải cổng hợp lệ là từ 1 đến 65535. Để bảo vệ hệ thống, 
 
 		var allProcs []process.ProcessInfo
 		var mu sync.Mutex
+		var permissionErrorFlag bool // Cờ đánh dấu nếu gặp lỗi quyền truy cập
 
 		// Hàng đợi công việc
 		portChan := make(chan int, endPort-startPort+1)
@@ -57,7 +59,13 @@ Dải cổng hợp lệ là từ 1 đến 65535. Để bảo vệ hệ thống, 
 				defer wg.Done()
 				for p := range portChan {
 					procs, err := lookup.FindProcessByPort(p)
-					if err == nil && len(procs) > 0 {
+					if err != nil {
+						if errors.Is(err, lookup.ErrPermissionDenied) {
+							mu.Lock()
+							permissionErrorFlag = true
+							mu.Unlock()
+						}
+					} else if len(procs) > 0 {
 						mu.Lock()
 						allProcs = append(allProcs, procs...)
 						mu.Unlock()
@@ -104,6 +112,12 @@ Dải cổng hợp lệ là từ 1 đến 65535. Để bảo vệ hệ thống, 
 		} else {
 			out := output.FormatTextMultiple(allProcs)
 			fmt.Println(out)
+			
+			// Cảnh báo nếu gặp thiếu quyền ở bất kỳ port nào
+			if permissionErrorFlag {
+				color.Yellow("\n[Chú ý] Quá trình quét bị từ chối truy cập (Permission Denied) ở một số port.")
+				color.Yellow("Gợi ý: Hãy chạy lại công cụ dưới quyền Administrator/sudo để có danh sách đầy đủ nhất.")
+			}
 		}
 		
 		// Khác với check/kill (bị exit do OS), ở đây exit 0
