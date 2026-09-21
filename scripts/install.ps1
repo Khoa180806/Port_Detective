@@ -14,21 +14,32 @@ if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") {
     $Arch = "arm64"
 }
 
-Write-Host "==> Fetching latest release information..." -ForegroundColor Cyan
+Write-Host "==> Fetching release assets..." -ForegroundColor Cyan
 $ReleaseUrl = "https://api.github.com/repos/$Owner/$Repo/releases/latest"
-$Tag = "v1.1.0"
+
+$DownloadUrl = ""
+$Tag = "latest"
 
 try {
     $Response = Invoke-RestMethod -Uri $ReleaseUrl -UseBasicParsing -TimeoutSec 10
     if ($Response.tag_name) {
         $Tag = $Response.tag_name
     }
+    # Match Windows asset matching the system architecture
+    $Asset = $Response.assets | Where-Object { $_.name -like "*Windows*${Arch}*.zip" } | Select-Object -First 1
+    if ($Asset -and $Asset.browser_download_url) {
+        $DownloadUrl = $Asset.browser_download_url
+        $ZipName = $Asset.name
+    }
 } catch {
-    Write-Host "Notice: Using default release tag $Tag" -ForegroundColor Yellow
+    Write-Host "Notice: Release API lookup failed, falling back to direct release URL." -ForegroundColor Yellow
 }
 
-$ZipName = "${Repo}_Windows_${Arch}.zip"
-$DownloadUrl = "https://github.com/$Owner/$Repo/releases/download/$Tag/$ZipName"
+if (-not $DownloadUrl) {
+    # Fallback using goreleaser project_name naming convention: port-detective_Windows_x86_64.zip
+    $ZipName = "port-detective_Windows_${Arch}.zip"
+    $DownloadUrl = "https://github.com/$Owner/$Repo/releases/download/$Tag/$ZipName"
+}
 
 $TempDir = Join-Path $env:TEMP "port-detective-install"
 if (Test-Path $TempDir) {

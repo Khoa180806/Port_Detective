@@ -40,16 +40,20 @@ case "$ARCH" in
 esac
 
 echo "==> Fetching latest release information..."
-LATEST_TAG=$(curl -sSf "https://api.github.com/repos/${OWNER}/${REPO}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+RELEASE_JSON=$(curl -sSf "https://api.github.com/repos/${OWNER}/${REPO}/releases/latest" || true)
 
+LATEST_TAG=$(echo "$RELEASE_JSON" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' || true)
 if [ -z "$LATEST_TAG" ]; then
-    echo "Warning: Could not fetch latest release tag via GitHub API, falling back to v1.1.0"
     LATEST_TAG="v1.1.0"
 fi
 
-VERSION="${LATEST_TAG#v}"
-TARBALL="${REPO}_${OS_NAME}_${ARCH_NAME}.tar.gz"
-DOWNLOAD_URL="https://github.com/${OWNER}/${REPO}/releases/download/${LATEST_TAG}/${TARBALL}"
+# Extract download URL from release assets matching OS and Arch
+DOWNLOAD_URL=$(echo "$RELEASE_JSON" | grep "browser_download_url" | grep -i "${OS_NAME}" | grep -i "${ARCH_NAME}" | head -n 1 | cut -d '"' -f 4 || true)
+
+TARBALL="port-detective_${OS_NAME}_${ARCH_NAME}.tar.gz"
+if [ -z "$DOWNLOAD_URL" ]; then
+    DOWNLOAD_URL="https://github.com/${OWNER}/${REPO}/releases/download/${LATEST_TAG}/${TARBALL}"
+fi
 
 echo "==> Downloading Port Detective ${LATEST_TAG} for ${OS_NAME} (${ARCH_NAME})..."
 TMP_DIR=$(mktemp -d)
