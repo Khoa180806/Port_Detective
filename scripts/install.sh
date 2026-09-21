@@ -44,7 +44,7 @@ RELEASE_JSON=$(curl -sSf "https://api.github.com/repos/${OWNER}/${REPO}/releases
 
 LATEST_TAG=$(echo "$RELEASE_JSON" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' || true)
 if [ -z "$LATEST_TAG" ]; then
-    LATEST_TAG="v1.1.0"
+    LATEST_TAG="v1.1.1"
 fi
 
 # Extract download URL from release assets matching OS and Arch
