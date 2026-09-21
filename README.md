@@ -61,13 +61,15 @@ Port 8080 is occupied by:
 
 **Ví dụ đầu ra (JSON):**
 ```json
-{
-  "port": 8080,
-  "pid": 12345,
-  "name": "node.exe",
-  "command": "node server.js",
-  "protocol": "tcp"
-}
+[
+  {
+    "pid": 12345,
+    "name": "node.exe",
+    "command": "node server.js",
+    "port": 8080,
+    "protocol": "tcp"
+  }
+]
 ```
 
 **Quy ước mã thoát (Exit codes):**
@@ -82,19 +84,19 @@ Port 8080 is occupied by:
 Giải phóng port bằng cách kết thúc tiến trình đang chiếm giữ:
 
 ```bash
-# Hỏi xác nhận trước khi dừng tiến trình
+# Hiển thị thông tin tiến trình và hỏi xác nhận [y/N] trước khi dừng
 port-detective kill 8080
 
 # Dừng tiến trình ngay lập tức, bỏ qua bước xác nhận
 port-detective kill 8080 --force
 
-# Xuất kết quả dừng tiến trình dưới dạng JSON
-port-detective kill 8080 --force --json
+# Xem trước (Dry Run) những tiến trình sẽ bị tiêu diệt mà không thực sự kill
+port-detective kill 8080 --dry-run
 ```
 
 ---
 
-### 3. Quét dải port (`scan` - Tính năng nâng cao)
+### 3. Quét dải port (`scan` - Đang phát triển / Task 15)
 
 Quét một khoảng port để xem những port nào đang mở:
 
