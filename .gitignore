@@ -1,4 +1,6 @@
 # Binaries
+pd
+pd.exe
 *.exe
 *.exe~
 *.dll
