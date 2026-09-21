@@ -63,6 +63,7 @@ Valid port range is from 1 to 65535. To protect system performance, range is lim
 	"output.occupied_by":         "Port %s is occupied by:\n",
 	"output.found_processes":     "Found %d processes:\n",
 	"output.no_processes":        "No processes found.",
+	"output.no_info":             "No process information available.",
 
 	// Internal errors
 	"error.permission_denied":    "permission denied (try running with Administrator or sudo privileges)",

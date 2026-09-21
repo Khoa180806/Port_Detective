@@ -6,7 +6,7 @@ import (
 	"github.com/Khoa180806/Port_Detective/internal/process"
 )
 
-// FormatJSON trả về chuỗi định dạng JSON cho một tiến trình.
+// FormatJSON returns a formatted JSON string for a single process.
 func FormatJSON(p *process.ProcessInfo) (string, error) {
 	if p == nil {
 		return "{}", nil
@@ -18,7 +18,7 @@ func FormatJSON(p *process.ProcessInfo) (string, error) {
 	return string(data), nil
 }
 
-// FormatJSONMultiple trả về chuỗi định dạng JSON cho danh sách các tiến trình.
+// FormatJSONMultiple returns a formatted JSON string for a list of processes.
 func FormatJSONMultiple(ps []process.ProcessInfo) (string, error) {
 	if ps == nil {
 		return "[]", nil

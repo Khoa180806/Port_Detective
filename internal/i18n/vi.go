@@ -64,6 +64,7 @@ Dải cổng hợp lệ là từ 1 đến 65535. Để bảo vệ hệ thống, 
 	"output.occupied_by":         "Port %s is occupied by:\n",
 	"output.found_processes":     "Found %d processes:\n",
 	"output.no_processes":        "No processes found.",
+	"output.no_info":             "Không có thông tin tiến trình khả dụng.",
 
 	// Internal errors
 	"error.permission_denied":    "không đủ quyền truy cập (thử chạy công cụ với quyền Administrator hoặc sudo)",
