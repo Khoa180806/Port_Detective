@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Khoa180806/Port_Detective/internal/i18n"
 	"github.com/Khoa180806/Port_Detective/internal/lookup"
 	"github.com/Khoa180806/Port_Detective/internal/output"
 	"github.com/fatih/color"
@@ -19,74 +20,70 @@ var dryRun bool
 
 var killCmd = &cobra.Command{
 	Use:   "kill [port]",
-	Short: "Buộc dừng các tiến trình đang chiếm giữ port",
-	Long: `Kiểm tra xem cổng mạng (port) nào đang bị chiếm giữ và buộc dừng (kill)
-tất cả các tiến trình (processes) đang sử dụng cổng mạng đó.
-
-Mặc định lệnh này sẽ hiển thị thông tin tiến trình và hỏi bạn (y/N) trước khi kill.
-Bạn có thể dùng cờ --force (-f) để bỏ qua câu hỏi xác nhận.`,
-	Args: cobra.ExactArgs(1),
+	Short: i18n.T("kill.short"),
+	Long:  i18n.T("kill.long"),
+	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		port, err := strconv.Atoi(args[0])
 		if err != nil || port < 1 || port > 65535 {
-			fmt.Println("Lỗi: Port phải là một số nguyên từ 1 đến 65535")
+			fmt.Println(i18n.T("kill.error.invalid_port"))
 			os.Exit(2)
 		}
 
 		procs, err := lookup.FindProcessByPort(port)
 		if err != nil {
 			if errors.Is(err, lookup.ErrPermissionDenied) {
-				color.Red("Lỗi: Không đủ quyền truy cập để lấy thông tin chi tiết.")
-				color.Yellow("Gợi ý: Hãy thử chạy lại lệnh dưới quyền Administrator (hoặc sudo trên Linux/macOS).")
+				color.Red(i18n.T("check.error.permission"))
+				color.Yellow(i18n.T("check.error.permission_hint"))
 			} else {
-				fmt.Printf("Lỗi khi tra cứu: %v\n", err)
+				fmt.Println(i18n.Tr("kill.error.lookup", err))
 			}
 			os.Exit(2)
 		}
 
 		if len(procs) == 0 {
-			fmt.Printf("Không tìm thấy tiến trình nào đang chạy trên port %d\n", port)
+			fmt.Println(i18n.Tr("kill.not_found", port))
 			os.Exit(1)
 		}
 
-		// Hiển thị thông tin tiến trình
-		color.New(color.FgRed, color.Bold).Println("CẢNH BÁO: Phát hiện các tiến trình sau đang chiếm dụng port:")
+		// Display identified processes occupying the port
+		color.New(color.FgRed, color.Bold).Println(i18n.T("kill.warning"))
 		fmt.Println(output.FormatTextMultiple(procs))
 		fmt.Println()
 
 		if dryRun {
-			fmt.Println("[DRY RUN] Sẽ không thực hiện lệnh kill nào.")
+			fmt.Println(i18n.T("kill.dry_run"))
 			os.Exit(0)
 		}
 
 		if !force {
-			fmt.Print("Bạn có chắc chắn muốn KILL tất cả các tiến trình trên không? [y/N]: ")
+			fmt.Print(i18n.T("kill.confirm"))
 			reader := bufio.NewReader(os.Stdin)
 			response, err := reader.ReadString('\n')
 			if err != nil {
-				fmt.Println("\nĐã hủy.")
+				fmt.Println("\n" + i18n.T("kill.cancelled"))
 				os.Exit(1)
 			}
 			response = strings.TrimSpace(strings.ToLower(response))
 			if response != "y" && response != "yes" {
-				fmt.Println("Đã hủy thao tác.")
+				fmt.Println(i18n.T("kill.cancelled"))
 				os.Exit(0)
 			}
 		}
 
 		hasError := false
 		for _, p := range procs {
-			fmt.Printf("Đang kill PID %d (%s)... ", p.PID, p.Name)
+			fmt.Print(i18n.Tr("kill.killing", p.PID, p.Name))
 			err := lookup.KillProcess(p.PID)
 			if err != nil {
 				if errors.Is(err, lookup.ErrPermissionDenied) {
-					color.Red("THẤT BẠI: Không đủ quyền (Permission Denied). Cần quyền Admin/sudo.")
+					color.Red(i18n.T("kill.failed.permission"))
 				} else {
-					color.Red("THẤT BẠI: %v", err)
+					color.Red(i18n.Tr("kill.failed", err))
 				}
 				hasError = true
 			} else {
-				color.Green("THÀNH CÔNG")
+				color.Green(i18n.T("kill.success"))
 			}
 		}
 
@@ -99,6 +96,6 @@ Bạn có thể dùng cờ --force (-f) để bỏ qua câu hỏi xác nhận.`,
 
 func init() {
 	rootCmd.AddCommand(killCmd)
-	killCmd.Flags().BoolVarP(&force, "force", "f", false, "Buộc dừng tiến trình không cần xác nhận (Bỏ qua y/N)")
-	killCmd.Flags().BoolVar(&dryRun, "dry-run", false, "Chỉ hiển thị các tiến trình sẽ bị kill mà không thực thi")
+	killCmd.Flags().BoolVarP(&force, "force", "f", false, i18n.T("flag.force"))
+	killCmd.Flags().BoolVar(&dryRun, "dry-run", false, i18n.T("flag.dry_run"))
 }
