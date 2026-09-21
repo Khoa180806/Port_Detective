@@ -17,7 +17,9 @@
 
 ---
 
-![Port Detective Demo](docs/images/demo.svg)
+<p align="center">
+  <img src="docs/images/demo.gif" alt="Port Detective Interactive Demo" width="100%" />
+</p>
 
 ---
 
@@ -173,6 +175,10 @@ pd kill 8080 --force
 pd kill 8080 --dry-run
 ```
 
+<p align="center">
+  <img src="docs/images/check_demo.png" alt="Check and Kill Demo" width="90%" />
+</p>
+
 ---
 
 ### 3. Scan Port Range (`scan`)
@@ -181,11 +187,15 @@ Concurrently scan a range of ports using an asynchronous worker pool:
 
 ```bash
 # Scan a range of ports
-pd scan 3000-3015
+pd scan 3000-3005
 
 # Export scan results to JSON
 pd scan 8000-8080 --json
 ```
+
+<p align="center">
+  <img src="docs/images/scan_demo.png" alt="Scan Ports Demo" width="90%" />
+</p>
 
 ---
 
