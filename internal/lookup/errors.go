@@ -6,27 +6,26 @@ import (
 )
 
 var (
-	// ErrPermissionDenied được trả về khi người dùng không đủ quyền truy cập (vd: cần Admin/root).
-	ErrPermissionDenied = errors.New("không đủ quyền truy cập (thử chạy công cụ với quyền Administrator hoặc sudo)")
+	// ErrPermissionDenied indicates insufficient permissions to access process details or terminate a process.
+	ErrPermissionDenied = errors.New("permission denied (try running with Administrator or sudo privileges)")
 
-	// ErrProcessNotFound được trả về khi không tìm thấy tiến trình nào.
-	ErrProcessNotFound = errors.New("không tìm thấy tiến trình")
+	// ErrProcessNotFound indicates no matching process was found for the specified criteria.
+	ErrProcessNotFound = errors.New("process not found")
 
-	// ErrKillFailed được trả về khi thao tác kill process gặp lỗi.
-	ErrKillFailed = errors.New("không thể buộc dừng tiến trình")
+	// ErrKillFailed indicates process termination failed.
+	ErrKillFailed = errors.New("failed to kill process")
 )
 
-// CheckPermissionError là một hàm trợ giúp để phân tích thông báo lỗi thô (từ stderr hoặc os) 
-// và map nó về ErrPermissionDenied nếu thấy dấu hiệu "permission" hoặc "access is denied".
+// CheckPermissionError analyzes error output and maps to ErrPermissionDenied if permission issues are detected.
 func CheckPermissionError(err error, stderr string) error {
 	if err == nil {
 		return nil
 	}
-	
+
 	errStr := strings.ToLower(err.Error() + " " + stderr)
-	if strings.Contains(errStr, "access is denied") || 
-	   strings.Contains(errStr, "permission denied") || 
-	   strings.Contains(errStr, "operation not permitted") {
+	if strings.Contains(errStr, "access is denied") ||
+		strings.Contains(errStr, "permission denied") ||
+		strings.Contains(errStr, "operation not permitted") {
 		return ErrPermissionDenied
 	}
 

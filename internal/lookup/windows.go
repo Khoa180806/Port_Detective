@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Khoa180806/Port_Detective/internal/i18n"
 	"github.com/Khoa180806/Port_Detective/internal/process"
 )
 
@@ -19,14 +20,14 @@ func init() {
 	OSStrategy = &WindowsStrategy{}
 }
 
-// WindowsStrategy thực thi PortLookupStrategy cho môi trường Windows
+// WindowsStrategy implements PortLookupStrategy for Windows systems.
 type WindowsStrategy struct{}
 
 func (s *WindowsStrategy) FindProcessByPort(port int) ([]process.ProcessInfo, error) {
 	cmd := exec.Command("netstat", "-ano")
 	output, err := cmd.Output()
 	if err != nil {
-		return nil, fmt.Errorf("lỗi khi chạy netstat: %v", err)
+		return nil, fmt.Errorf("%s", i18n.Tr("error.netstat_failed", err))
 	}
 
 	pids, protocols := parseNetstatForPort(string(output), port)
@@ -44,7 +45,7 @@ func (s *WindowsStrategy) FindProcessByPort(port int) ([]process.ProcessInfo, er
 		results = append(results, process.ProcessInfo{
 			PID:      pid,
 			Name:     name,
-			Command:  name, // Mặc định dùng name làm command nếu không lấy được full command line
+			Command:  name, // Default to process name if full command line cannot be retrieved
 			Port:     port,
 			Protocol: protocols[i],
 		})
@@ -62,13 +63,12 @@ func (s *WindowsStrategy) KillProcess(pid int) error {
 		if errors.Is(err, ErrPermissionDenied) {
 			return err
 		}
-		return fmt.Errorf("không thể kill PID %d: %s", pid, stderr.String())
+		return fmt.Errorf("%s", i18n.Tr("error.kill_pid_failed", pid, stderr.String()))
 	}
 	return nil
 }
 
-// parseNetstatForPort phân tích output của netstat -ano để tìm PID tương ứng với port.
-// Trả về danh sách PIDs và danh sách Protocols tương ứng (để xử lý trường hợp nhiều process / protocol).
+// parseNetstatForPort parses netstat -ano output to find PIDs and protocols corresponding to targetPort.
 func parseNetstatForPort(output string, targetPort int) ([]int, []string) {
 	var pids []int
 	var protocols []string
@@ -89,13 +89,13 @@ func parseNetstatForPort(output string, targetPort int) ([]int, []string) {
 		protocol := strings.ToLower(fields[0])
 		localAddr := fields[1]
 
-		// Local address có dạng IP:PORT (vd: 0.0.0.0:8080 hoặc [::1]:8080)
+		// Local address format: IP:PORT (e.g., 0.0.0.0:8080 or [::1]:8080)
 		portSuffix := fmt.Sprintf(":%d", targetPort)
 		if !strings.HasSuffix(localAddr, portSuffix) {
 			continue
 		}
 
-		// Với TCP, PID ở cột cuối (cột 4, do index 4). Với UDP (không có state), PID ở cột 3 (index 3).
+		// For TCP, PID is in the last column (index 4). For UDP (no state column), PID is in column index 3.
 		pidStr := fields[len(fields)-1]
 		pid, err := strconv.Atoi(pidStr)
 		if err != nil || pid == 0 {
@@ -113,20 +113,20 @@ func parseNetstatForPort(output string, targetPort int) ([]int, []string) {
 	return pids, protocols
 }
 
-// getProcessName lấy tên tiến trình từ PID bằng lệnh tasklist.
+// getProcessName retrieves process name from PID using tasklist.
 func getProcessName(pid int) string {
 	cmd := exec.Command("tasklist", "/FO", "CSV", "/NH", "/FI", fmt.Sprintf("PID eq %d", pid))
 	output, err := cmd.Output()
 	if err != nil {
 		return ""
 	}
-	
+
 	outStr := strings.TrimSpace(string(output))
 	if outStr == "" || strings.HasPrefix(outStr, "INFO:") {
-		return "" // Không tìm thấy
+		return "" // Not found
 	}
 
-	// Output CSV có dạng: "svchost.exe","1552","Services","0","48,092 K"
+	// CSV format: "svchost.exe","1552","Services","0","48,092 K"
 	r := csv.NewReader(strings.NewReader(outStr))
 	record, err := r.Read()
 	if err == nil && len(record) > 0 {

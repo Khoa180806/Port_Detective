@@ -6,25 +6,22 @@ import (
 	"github.com/Khoa180806/Port_Detective/internal/process"
 )
 
-// ErrNotSupported được trả về khi thao tác không được hỗ trợ trên hệ điều hành hiện tại.
-var ErrNotSupported = errors.New("không được hỗ trợ trên hệ điều hành này")
+// ErrNotSupported is returned when an operation is not supported on the current operating system.
+var ErrNotSupported = errors.New("operation not supported on this operating system")
 
-// PortLookupStrategy định nghĩa giao ước chung (contract) cho việc tương tác
-// với các tiến trình mạng. Mỗi hệ điều hành (Windows, Linux, macOS) sẽ
-// cung cấp một implementation riêng cho interface này.
+// PortLookupStrategy defines the contract for interacting with network processes on different operating systems.
 type PortLookupStrategy interface {
-	// FindProcessByPort trả về danh sách các tiến trình đang chiếm giữ một port cụ thể.
+	// FindProcessByPort returns a list of processes occupying the specified port.
 	FindProcessByPort(port int) ([]process.ProcessInfo, error)
 
-	// KillProcess buộc dừng một tiến trình dựa vào Process ID (PID).
+	// KillProcess terminates a process by its Process ID (PID).
 	KillProcess(pid int) error
 }
 
-// OSStrategy lưu trữ implementation hiện tại của hệ điều hành đang chạy.
-// Biến này sẽ được gán trong hàm init() của các file OS cụ thể (windows.go, linux.go, ...).
+// OSStrategy holds the active OS-specific PortLookupStrategy implementation.
 var OSStrategy PortLookupStrategy
 
-// FindProcessByPort là hàm tiện ích (dispatch) chuyển tiếp lệnh gọi đến strategy của OS hiện tại.
+// FindProcessByPort forwards the lookup request to the active OS strategy.
 func FindProcessByPort(port int) ([]process.ProcessInfo, error) {
 	if OSStrategy == nil {
 		return nil, ErrNotSupported
@@ -32,7 +29,7 @@ func FindProcessByPort(port int) ([]process.ProcessInfo, error) {
 	return OSStrategy.FindProcessByPort(port)
 }
 
-// KillProcess là hàm tiện ích (dispatch) chuyển tiếp lệnh gọi đến strategy của OS hiện tại.
+// KillProcess forwards the termination request to the active OS strategy.
 func KillProcess(pid int) error {
 	if OSStrategy == nil {
 		return ErrNotSupported

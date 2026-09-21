@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Khoa180806/Port_Detective/internal/i18n"
 	"github.com/Khoa180806/Port_Detective/internal/process"
 )
 
@@ -20,24 +21,24 @@ func init() {
 	OSStrategy = &LinuxStrategy{}
 }
 
-// LinuxStrategy thực thi PortLookupStrategy cho môi trường Linux
+// LinuxStrategy implements PortLookupStrategy for Linux systems.
 type LinuxStrategy struct{}
 
 func (s *LinuxStrategy) FindProcessByPort(port int) ([]process.ProcessInfo, error) {
-	// Ưu tiên 1: Sử dụng lsof
+	// Priority 1: Use lsof
 	procs, err := findViaLsof(port)
 	if err == nil && len(procs) > 0 {
 		return procs, nil
 	}
 
-	// Ưu tiên 2: Fallback parse trực tiếp /proc (không cần cài thêm tool)
+	// Priority 2: Fallback to parsing /proc directly (zero external tool dependency)
 	procs, err = findViaProcFS(port)
 	if err != nil {
 		err = CheckPermissionError(err, "")
 		if errors.Is(err, ErrPermissionDenied) {
 			return nil, err
 		}
-		return nil, fmt.Errorf("cả lsof và procfs đều thất bại: %v", err)
+		return nil, fmt.Errorf("%s", i18n.Tr("error.lsof_procfs_failed", err))
 	}
 
 	return procs, nil
@@ -52,7 +53,7 @@ func (s *LinuxStrategy) KillProcess(pid int) error {
 		if errors.Is(err, ErrPermissionDenied) {
 			return err
 		}
-		return fmt.Errorf("không thể kill PID %d: %s", pid, stderr.String())
+		return fmt.Errorf("%s", i18n.Tr("error.kill_pid_failed", pid, stderr.String()))
 	}
 	return nil
 }
@@ -70,12 +71,12 @@ func parseLsofOutput(output string, port int) []process.ProcessInfo {
 	var results []process.ProcessInfo
 	seen := make(map[int]bool)
 	lines := strings.Split(output, "\n")
-	
+
 	for i, line := range lines {
 		if i == 0 || strings.TrimSpace(line) == "" {
-			continue // Bỏ qua header
+			continue // Skip header line
 		}
-		
+
 		fields := strings.Fields(line)
 		if len(fields) < 9 {
 			continue
@@ -100,18 +101,18 @@ func parseLsofOutput(output string, port int) []process.ProcessInfo {
 		results = append(results, process.ProcessInfo{
 			PID:      pid,
 			Name:     command,
-			Command:  command, // lsof cắt bớt command line, fallback sau nếu cần
+			Command:  command, // lsof truncates command line
 			Port:     port,
 			Protocol: protocol,
 		})
 		seen[pid] = true
 	}
-	
+
 	return results
 }
 
 func findViaProcFS(port int) ([]process.ProcessInfo, error) {
-	// Lấy danh sách inode đang listen trên port này (TCP v4 và v6)
+	// Retrieve listening socket inodes for target port (TCP v4/v6, UDP v4/v6)
 	inodes := getInodesForPort(port, "/proc/net/tcp")
 	inodes = append(inodes, getInodesForPort(port, "/proc/net/tcp6")...)
 	inodes = append(inodes, getInodesForPort(port, "/proc/net/udp")...)
@@ -128,7 +129,7 @@ func findViaProcFS(port int) ([]process.ProcessInfo, error) {
 
 	var results []process.ProcessInfo
 
-	// Duyệt qua tất cả các tiến trình trong /proc
+	// Scan all process directories under /proc
 	dirs, err := os.ReadDir("/proc")
 	if err != nil {
 		return nil, err
@@ -140,13 +141,13 @@ func findViaProcFS(port int) ([]process.ProcessInfo, error) {
 		}
 		pid, err := strconv.Atoi(d.Name())
 		if err != nil {
-			continue // Không phải thư mục PID
+			continue // Not a numeric PID directory
 		}
 
 		fdDir := filepath.Join("/proc", d.Name(), "fd")
 		fds, err := os.ReadDir(fdDir)
 		if err != nil {
-			continue // Permission denied (vd: process của user khác)
+			continue // Permission denied or process exited
 		}
 
 		for _, fd := range fds {
@@ -155,20 +156,20 @@ func findViaProcFS(port int) ([]process.ProcessInfo, error) {
 				continue
 			}
 
-			// Kiểm tra xem link có dạng socket:[inode] không
+			// Check if file descriptor points to socket:[inode]
 			if strings.HasPrefix(link, "socket:[") && strings.HasSuffix(link, "]") {
 				inode := link[8 : len(link)-1]
 				if inodeSet[inode] {
-					// Tìm thấy!
+					// Match found
 					name, cmdline := getProcDetails(pid)
 					results = append(results, process.ProcessInfo{
 						PID:      pid,
 						Name:     name,
 						Command:  cmdline,
 						Port:     port,
-						Protocol: "unknown", // Có thể tra cứu lại file proc để biết chính xác, tạm để unknown hoặc gộp với logic inodes
+						Protocol: "unknown",
 					})
-					// Xóa inode để tránh add duplicate nếu process có nhiều FD vào cùng socket
+					// Delete inode to prevent duplicates if multiple FDs reference the same socket
 					delete(inodeSet, inode)
 				}
 			}
@@ -178,7 +179,7 @@ func findViaProcFS(port int) ([]process.ProcessInfo, error) {
 	return results, nil
 }
 
-// getInodesForPort đọc file /proc/net/[protocol] để tìm các inode liên kết với port cụ thể.
+// getInodesForPort parses /proc/net/[protocol] to find socket inodes bound to target port.
 func getInodesForPort(port int, procFile string) []string {
 	content, err := os.ReadFile(procFile)
 	if err != nil {
@@ -191,18 +192,18 @@ func parseInodesFromProcNet(content string, port int) []string {
 	var inodes []string
 	hexPort := fmt.Sprintf("%04X", port)
 	lines := strings.Split(content, "\n")
-	
+
 	for i, line := range lines {
 		if i == 0 || strings.TrimSpace(line) == "" {
 			continue
 		}
-		
+
 		fields := strings.Fields(line)
 		if len(fields) < 10 {
 			continue
 		}
 
-		// local_address là trường thứ 2, vd: 00000000:1F90
+		// local_address is column 2, e.g.: 00000000:1F90
 		localAddr := fields[1]
 		parts := strings.Split(localAddr, ":")
 		if len(parts) != 2 {
@@ -210,21 +211,21 @@ func parseInodesFromProcNet(content string, port int) []string {
 		}
 
 		if parts[1] == hexPort {
-			// Inode là trường thứ 10
+			// Inode is column 10 (index 9)
 			inodes = append(inodes, fields[9])
 		}
 	}
 	return inodes
 }
 
-// getProcDetails lấy Name và Command Line từ /proc/<pid>/comm và /proc/<pid>/cmdline.
+// getProcDetails reads process name and command line from /proc/<pid>/comm and /proc/<pid>/cmdline.
 func getProcDetails(pid int) (name, cmdline string) {
-	// Đọc comm
+	// Read comm
 	if b, err := os.ReadFile(fmt.Sprintf("/proc/%d/comm", pid)); err == nil {
 		name = strings.TrimSpace(string(b))
 	}
 
-	// Đọc cmdline (null-terminated)
+	// Read cmdline (null-delimited)
 	if b, err := os.ReadFile(fmt.Sprintf("/proc/%d/cmdline", pid)); err == nil {
 		cmdline = strings.ReplaceAll(string(b), "\x00", " ")
 		cmdline = strings.TrimSpace(cmdline)
@@ -233,6 +234,6 @@ func getProcDetails(pid int) (name, cmdline string) {
 	if cmdline == "" {
 		cmdline = name
 	}
-	
+
 	return
 }

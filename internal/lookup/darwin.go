@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Khoa180806/Port_Detective/internal/i18n"
 	"github.com/Khoa180806/Port_Detective/internal/process"
 )
 
@@ -18,23 +19,23 @@ func init() {
 	OSStrategy = &DarwinStrategy{}
 }
 
-// DarwinStrategy thực thi PortLookupStrategy cho môi trường macOS
+// DarwinStrategy implements PortLookupStrategy for macOS systems.
 type DarwinStrategy struct{}
 
 func (s *DarwinStrategy) FindProcessByPort(port int) ([]process.ProcessInfo, error) {
 	cmd := exec.Command("lsof", "-i", fmt.Sprintf(":%d", port), "-P", "-n")
 	output, err := cmd.Output()
 	if err != nil {
-		// lsof trả về exit code 1 nếu không tìm thấy tiến trình nào
+		// lsof returns exit code 1 when no matching process is found
 		if exitError, ok := err.(*exec.ExitError); ok && exitError.ExitCode() == 1 {
 			return nil, nil
 		}
-		
+
 		err = CheckPermissionError(err, "")
 		if errors.Is(err, ErrPermissionDenied) {
 			return nil, err
 		}
-		return nil, fmt.Errorf("lỗi khi chạy lsof: %v", err)
+		return nil, fmt.Errorf("%s", i18n.Tr("error.lsof_failed", err))
 	}
 
 	return parseDarwinLsofOutput(string(output), port), nil
@@ -49,28 +50,28 @@ func (s *DarwinStrategy) KillProcess(pid int) error {
 		if errors.Is(err, ErrPermissionDenied) {
 			return err
 		}
-		return fmt.Errorf("không thể kill PID %d: %s", pid, stderr.String())
+		return fmt.Errorf("%s", i18n.Tr("error.kill_pid_failed", pid, stderr.String()))
 	}
 	return nil
 }
 
-// parseDarwinLsofOutput phân tích cú pháp kết quả trả về từ lệnh lsof trên macOS
+// parseDarwinLsofOutput parses lsof output on macOS into ProcessInfo slices.
 func parseDarwinLsofOutput(output string, port int) []process.ProcessInfo {
 	var results []process.ProcessInfo
 	seen := make(map[int]bool)
 	lines := strings.Split(output, "\n")
-	
+
 	for i, line := range lines {
 		if i == 0 || strings.TrimSpace(line) == "" {
-			continue // Bỏ qua dòng header (COMMAND PID USER ...)
+			continue // Skip header line (COMMAND PID USER ...)
 		}
-		
+
 		fields := strings.Fields(line)
 		if len(fields) < 8 {
 			continue
 		}
 
-		// Field 1 là PID
+		// Field 1 is PID
 		pidStr := fields[1]
 		pid, err := strconv.Atoi(pidStr)
 		if err != nil {
@@ -78,14 +79,13 @@ func parseDarwinLsofOutput(output string, port int) []process.ProcessInfo {
 		}
 
 		if seen[pid] {
-			continue // Tránh add duplicate process
+			continue // Avoid duplicates
 		}
 
-		// Field 0 là Command/Name
+		// Field 0 is Command/Name
 		command := fields[0]
-		
-		// Protocol thường nằm ở cột NAME hoặc TYPE.
-		// VD macOS: TCP *:8080 (LISTEN) hoặc UDP *:*
+
+		// Protocol information is in NAME or TYPE column (e.g. TCP *:8080 (LISTEN) or UDP *:*)
 		protocol := "tcp"
 		lowerLine := strings.ToLower(line)
 		if strings.Contains(lowerLine, "udp") {
@@ -95,12 +95,12 @@ func parseDarwinLsofOutput(output string, port int) []process.ProcessInfo {
 		results = append(results, process.ProcessInfo{
 			PID:      pid,
 			Name:     command,
-			Command:  command, // lsof không cung cấp full command line parameters
+			Command:  command, // lsof does not provide full command-line arguments
 			Port:     port,
 			Protocol: protocol,
 		})
 		seen[pid] = true
 	}
-	
+
 	return results
 }
