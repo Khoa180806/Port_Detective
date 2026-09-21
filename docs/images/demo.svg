@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 440" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141923" />
+      <stop offset="100%" stop-color="#0f111a" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.55" />
+    </filter>
+  </defs>
+
+  <style>
+    .window { fill: url(#bgGrad); stroke: #2a3142; stroke-width: 1.5; rx: 12px; }
+    .header { fill: #1c2333; rx: 12px; }
+    .dot-red { fill: #ff5f56; }
+    .dot-yellow { fill: #ffbd2e; }
+    .dot-green { fill: #27c93f; }
+    .title { fill: #8a99ad; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; font-size: 13px; font-weight: 600; text-anchor: middle; }
+    .text { font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace; font-size: 13.5px; }
+    .prompt { fill: #27c93f; font-weight: 700; }
+    .cmd { fill: #ffffff; font-weight: 600; }
+    .arg { fill: #38bdf8; font-weight: 600; }
+    .header-msg { fill: #f1f5f9; font-weight: 600; }
+    .lbl { fill: #94a3b8; }
+    .val-cyan { fill: #38bdf8; font-weight: 700; }
+    .val-red { fill: #f87171; font-weight: 700; }
+    .val-yellow { fill: #facc15; }
+    .val-gray { fill: #64748b; }
+    .val-green { fill: #4ade80; font-weight: 600; }
+    .success { fill: #22c55e; font-weight: 700; }
+    .cursor { fill: #38bdf8; animation: blink 1s infinite; }
+  </style>
+
+  <g filter="url(#shadow)">
+    <!-- Terminal window background -->
+    <rect x="20" y="20" width="780" height="400" class="window" />
+    <!-- Window Header -->
+    <path d="M 20,32 A 12,12 0 0 1 32,20 L 788,20 A 12,12 0 0 1 800,32 L 800,56 L 20,56 Z" class="header" />
+    
+    <!-- Window Controls -->
+    <circle cx="44" cy="38" r="6" class="dot-red" />
+    <circle cx="64" cy="38" r="6" class="dot-yellow" />
+    <circle cx="84" cy="38" r="6" class="dot-green" />
+    
+    <text x="410" y="42" class="title">Port Detective — Terminal Demo</text>
+  </g>
+
+  <!-- Terminal Content -->
+  <g transform="translate(45, 90)" class="text">
+    <!-- Command 1: Check port 8080 -->
+    <text x="0" y="0">
+      <tspan class="prompt">$ </tspan>
+      <tspan class="cmd">pd check </tspan>
+      <tspan class="arg">8080</tspan>
+    </text>
+
+    <!-- Output 1 -->
+    <text x="0" y="26" class="header-msg">Port <tspan class="val-cyan">8080</tspan> is occupied by:</text>
+    <text x="0" y="48"><tspan class="lbl">  PID:      </tspan><tspan class="val-red">14280</tspan></text>
+    <text x="0" y="70"><tspan class="lbl">  Process:  </tspan><tspan class="val-yellow">node.exe</tspan></text>
+    <text x="0" y="92"><tspan class="lbl">  Command:  </tspan><tspan class="val-gray">node server.js</tspan></text>
+    <text x="0" y="114"><tspan class="lbl">  Protocol: </tspan><tspan class="val-green">tcp</tspan></text>
+
+    <!-- Blank line -->
+
+    <!-- Command 2: Kill port with confirmation bypass -->
+    <text x="0" y="156">
+      <tspan class="prompt">$ </tspan>
+      <tspan class="cmd">pd kill </tspan>
+      <tspan class="arg">8080 </tspan>
+      <tspan class="arg">--force</tspan>
+    </text>
+
+    <!-- Output 2 -->
+    <text x="0" y="182" class="val-red" font-weight="700">WARNING: Detected process(es) occupying port:</text>
+    <text x="0" y="204"><tspan class="lbl">  Port:     </tspan><tspan class="val-cyan">8080</tspan></text>
+    <text x="0" y="226"><tspan class="lbl">  PID:      </tspan><tspan class="val-red">14280</tspan>  <tspan class="lbl">Process: </tspan><tspan class="val-yellow">node.exe</tspan></text>
+    <text x="0" y="254">
+      <tspan class="lbl">Terminating PID 14280 (node.exe)... </tspan>
+      <tspan class="success">SUCCESS</tspan>
+    </text>
+
+    <!-- Interactive Cursor -->
+    <text x="0" y="295">
+      <tspan class="prompt">$ </tspan>
+      <rect x="18" y="283" width="8" height="15" class="cursor" />
+    </text>
+  </g>
+</svg>
