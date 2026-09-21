@@ -7,7 +7,7 @@ import (
 func TestI18nBasic(t *testing.T) {
 	// Register sample messages for testing
 	RegisterMessages("en", MessageMap{
-		"test.hello": "Hello %s",
+		"test.hello":   "Hello %s",
 		"test.only_en": "English only",
 	})
 	RegisterMessages("vi", MessageMap{
@@ -48,6 +48,42 @@ func TestI18nBasic(t *testing.T) {
 	// Test unsupported language
 	if err := SetLang("fr"); err == nil {
 		t.Errorf("expected error setting unsupported lang 'fr', got nil")
+	}
+
+	// Reset to "en"
+	_ = SetLang("en")
+}
+
+func TestDictionariesIntegrity(t *testing.T) {
+	// Verify that en and vi dictionaries have matching keys
+	if len(enMessages) == 0 {
+		t.Fatal("enMessages is empty")
+	}
+	if len(viMessages) == 0 {
+		t.Fatal("viMessages is empty")
+	}
+
+	for k := range enMessages {
+		if _, exists := viMessages[k]; !exists {
+			t.Errorf("key '%s' present in enMessages but missing in viMessages", k)
+		}
+	}
+
+	for k := range viMessages {
+		if _, exists := enMessages[k]; !exists {
+			t.Errorf("key '%s' present in viMessages but missing in enMessages", k)
+		}
+	}
+
+	// Verify key translations in both languages
+	_ = SetLang("en")
+	if got := T("check.short"); got != "Check the process listening on a specified port" {
+		t.Errorf("unexpected EN check.short: %s", got)
+	}
+
+	_ = SetLang("vi")
+	if got := T("check.short"); got != "Kiểm tra tiến trình đang chạy trên một port" {
+		t.Errorf("unexpected VI check.short: %s", got)
 	}
 
 	// Reset to "en"
