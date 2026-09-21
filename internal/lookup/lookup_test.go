@@ -88,3 +88,18 @@ func TestDispatch_NilStrategy(t *testing.T) {
 		t.Errorf("Mong đợi ErrNotSupported, nhận được: %v", err)
 	}
 }
+
+func TestLocalizedErrorMessages(t *testing.T) {
+	if msg := lookup.ErrPermissionDeniedMessage(); msg == "" {
+		t.Errorf("expected non-empty ErrPermissionDeniedMessage")
+	}
+	if msg := lookup.ErrProcessNotFoundMessage(); msg == "" {
+		t.Errorf("expected non-empty ErrProcessNotFoundMessage")
+	}
+	if msg := lookup.ErrKillFailedMessage(); msg == "" {
+		t.Errorf("expected non-empty ErrKillFailedMessage")
+	}
+	if msg := lookup.ErrNotSupportedMessage(); msg == "" {
+		t.Errorf("expected non-empty ErrNotSupportedMessage")
+	}
+}

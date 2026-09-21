@@ -3,11 +3,17 @@ package lookup
 import (
 	"errors"
 
+	"github.com/Khoa180806/Port_Detective/internal/i18n"
 	"github.com/Khoa180806/Port_Detective/internal/process"
 )
 
 // ErrNotSupported is returned when an operation is not supported on the current operating system.
-var ErrNotSupported = errors.New("operation not supported on this operating system")
+var ErrNotSupported = errors.New("operation not supported")
+
+// ErrNotSupportedMessage returns the localized error message for unsupported operations.
+func ErrNotSupportedMessage() string {
+	return i18n.T("error.not_supported")
+}
 
 // PortLookupStrategy defines the contract for interacting with network processes on different operating systems.
 type PortLookupStrategy interface {
