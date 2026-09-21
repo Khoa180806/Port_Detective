@@ -82,7 +82,7 @@ func TestDictionariesIntegrity(t *testing.T) {
 	}
 
 	_ = SetLang("vi")
-	if got := T("check.short"); got != "Kiểm tra tiến trình đang chạy trên một port" {
+	if got := T("check.short"); got != "Kiểm tra process đang chạy trên một port" {
 		t.Errorf("unexpected VI check.short: %s", got)
 	}
 
