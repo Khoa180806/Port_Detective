@@ -1,71 +1,86 @@
-# 🤝 Hướng dẫn đóng góp (Contributing Guide)
+# 🤝 Contributing Guide
 
-Cảm ơn bạn đã quan tâm đến việc đóng góp cho **Port Detective**! Dưới đây là các hướng dẫn giúp bạn thiết lập môi trường phát triển và gửi các đóng góp chất lượng.
-
----
-
-## 🛠️ Chuẩn bị môi trường
-
-1. **Cài đặt Go**: Yêu cầu Go phiên bản **1.21** trở lên.
-2. **Clone repository**:
-   ```bash
-   git clone https://github.com/Khoa180806/Port_Detective.git
-   cd Port_Detective
-   ```
-3. **Cài đặt dependencies**:
-   ```bash
-   go mod download
-   ```
+Thank you for your interest in contributing to **Port Detective (`pd`)**! We welcome community contributions, bug reports, and suggestions. This guide covers how to set up your development environment, run tests, and submit high-quality pull requests.
 
 ---
 
-## 🧪 Quy trình phát triển & Kiểm thử
+## 🛠️ Development Setup
 
-### 1. Chạy Unit Test
-Chúng tôi khuyến khích phát triển theo hướng kiểm thử (TDD). Chạy toàn bộ test suite bằng lệnh:
+### Prerequisites
+- **Go**: Version **1.21** or later installed.
+- **Git**: Configured on your system.
+
+### Getting the Code
+```bash
+git clone https://github.com/Khoa180806/Port_Detective.git
+cd Port_Detective
+go mod download
+```
+
+---
+
+## 🧪 Development & Testing Workflow
+
+### 1. Run Unit Tests
+We advocate for test-driven development (TDD). Ensure all tests pass before making any changes:
+
 ```bash
 go test -v ./...
 ```
 
-### 2. Kiểm tra tĩnh (Lint & Vet)
-Đảm bảo mã nguồn tuân thủ các quy chuẩn idiomatic của Go:
+### 2. Static Analysis & Linting
+Ensure code adheres to idiomatic Go conventions:
+
 ```bash
+# Format code
+go fmt ./...
+
+# Static analysis
 go vet ./...
 ```
 
-### 3. Kiểm thử Biên dịch Đa nền tảng (Cross-compile Check)
-Vì dự án dùng Go Build Tags cho từng hệ điều hành, hãy kiểm tra biên dịch cho cả 3 nền tảng trước khi tạo PR:
+### 3. Cross-Platform Compilation Check
+Because Port Detective relies on OS-specific build tags (`windows.go`, `linux.go`, `darwin.go`), always verify that your changes compile successfully across all supported platforms:
 
 ```bash
-# Windows
-GOOS=windows GOARCH=amd64 go build -o bin/port-detective-windows.exe .
+# Windows (amd64)
+GOOS=windows GOARCH=amd64 go build -o bin/pd-windows.exe ./cmd/pd
 
-# Linux
-GOOS=linux GOARCH=amd64 go build -o bin/port-detective-linux .
+# Linux (amd64)
+GOOS=linux GOARCH=amd64 go build -o bin/pd-linux ./cmd/pd
 
-# macOS (Darwin)
-GOOS=darwin GOARCH=arm64 go build -o bin/port-detective-darwin .
+# macOS (Apple Silicon arm64)
+GOOS=darwin GOARCH=arm64 go build -o bin/pd-darwin ./cmd/pd
 ```
 
 ---
 
-## 📝 Quy chuẩn Commit (Commit Message Guidelines)
+## 📝 Commit Guidelines
 
-Chúng tôi áp dụng định dạng **Conventional Commits**:
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
-- `feat:` Thêm tính năng mới (ví dụ: `feat: add scan command for port ranges`)
-- `fix:` Sửa lỗi (ví dụ: `fix: handle edge case when netstat PID is 0`)
-- `refactor:` Tái cấu trúc mã nguồn mà không thay đổi hành vi logic
-- `test:` Bổ sung hoặc cập nhật unit test
-- `docs:` Thay đổi hoặc bổ sung tài liệu
-- `chore:` Các thay đổi phụ trợ như cấu hình build, gitignore...
+- `feat:` A new feature or capability (e.g., `feat: add scan command for port ranges`)
+- `fix:` A bug fix (e.g., `fix: handle edge case when netstat PID is 0`)
+- `refactor:` Code restructuring that neither fixes a bug nor adds a feature
+- `test:` Adding missing tests or correcting existing tests
+- `docs:` Documentation changes only
+- `chore:` Changes to build process, CI workflows, or auxiliary tooling
+
+Keep commits atomic: make small, focused commits with concise, descriptive messages.
 
 ---
 
-## 🔀 Quy trình gửi Pull Request (PR)
+## 🔀 Submitting a Pull Request (PR)
 
-1. Fork repository về tài khoản cá nhân.
-2. Tạo nhánh tính năng mới từ `master` hoặc `main` (ví dụ: `git checkout -b feat/support-udp-ports`).
-3. Thực hiện thay đổi, chia nhỏ thành các commit có ý nghĩa rõ ràng.
-4. Đảm bảo mọi test case đều pass và mã nguồn được định dạng bằng `gofmt`.
-5. Tạo Pull Request và mô tả chi tiết những gì bạn đã làm cùng các bước kiểm thử thực tế.
+1. Fork the repository and create a feature branch from `master`:
+   ```bash
+   git checkout -b feat/your-feature-name
+   ```
+2. Write clean, idiomatic Go code with accompanying unit tests.
+3. Run `go test -v ./...` and verify cross-compilation passes.
+4. Commit your changes following Conventional Commits.
+5. Push your branch to your fork:
+   ```bash
+   git push origin feat/your-feature-name
+   ```
+6. Open a Pull Request against `master`. Provide a clear summary of your changes, the rationale behind them, and verification steps.
