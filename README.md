@@ -18,7 +18,7 @@
 ---
 
 <p align="center">
-  <img src="docs/images/demo.gif" alt="Port Detective Interactive Demo" width="100%" />
+  <img src="assets/demo.gif" alt="Port Detective Interactive Demo" width="100%" />
 </p>
 
 ---
@@ -176,7 +176,7 @@ pd kill 8080 --dry-run
 ```
 
 <p align="center">
-  <img src="docs/images/check_demo.png" alt="Check and Kill Demo" width="90%" />
+  <img src="assets/check_demo.png" alt="Check and Kill Demo" width="90%" />
 </p>
 
 ---
@@ -194,7 +194,7 @@ pd scan 8000-8080 --json
 ```
 
 <p align="center">
-  <img src="docs/images/scan_demo.png" alt="Scan Ports Demo" width="90%" />
+  <img src="assets/scan_demo.png" alt="Scan Ports Demo" width="90%" />
 </p>
 
 ---
