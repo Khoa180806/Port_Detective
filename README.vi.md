@@ -234,12 +234,18 @@ Port Detective tuân thủ quy ước chuẩn của các công cụ dòng lệnh
 
 ```
 port-detective/
+├── assets/                   # Thư mục hình ảnh, demo GIF/SVG minh họa
 ├── cmd/
 │   ├── pd/main.go            # Entry point chính của ứng dụng (sinh ra binary "pd")
 │   ├── root.go               # Cobra root command & cơ chế i18n hook động
 │   ├── check.go              # Lệnh `pd check <port>`
 │   ├── kill.go               # Lệnh `pd kill <port>`
 │   └── scan.go               # Lệnh `pd scan <start>-<end>`
+├── docs/                     # Tài liệu kỹ thuật chuyên sâu (English)
+│   ├── architecture.md       # Thiết kế kiến trúc & cơ chế đa nền tảng
+│   ├── cli-reference.md      # Chi tiết cú pháp lệnh, cờ tham số và exit codes
+│   ├── contributing.md       # Quy chuẩn đóng góp mã nguồn & workflow kiểm thử
+│   └── installation.md       # Hướng dẫn cài đặt chi tiết & xử lý sự cố
 ├── internal/
 │   ├── i18n/                 # Translation engine (bản đồ từ điển EN / VI)
 │   ├── lookup/               # Triển khai OS Strategy qua Go Build Tags
@@ -249,15 +255,20 @@ port-detective/
 │   │   └── darwin.go         # Strategy macOS (lsof)
 │   ├── output/               # Formatter xuất text màu sắc tương phản cao và JSON
 │   └── process/              # Core Domain Model struct ProcessInfo
-├── scripts/                  # Script tự động cài đặt (install.sh, install.ps1) & release
-└── docs/                     # Tài liệu minh họa, hình ảnh và demo SVG/GIF
+└── scripts/                  # Script tự động cài đặt (install.sh, install.ps1) & release
 ```
+
+Để tìm hiểu sâu hơn về mặt kỹ thuật, bạn có thể tham khảo:
+- [Kiến trúc kỹ thuật (Technical Architecture)](docs/architecture.md)
+- [Cẩm nang tra cứu CLI (CLI Reference Manual)](docs/cli-reference.md)
+- [Hướng dẫn cài đặt chi tiết (Installation Guide)](docs/installation.md)
+- [Hướng dẫn đóng góp (Contributing Guide)](docs/contributing.md)
 
 ---
 
 ## 🤝 Đóng góp phát triển
 
-Mọi đóng góp, báo cáo lỗi hoặc đề xuất tính năng mới đều được hoan nghênh nhiệt tình! Bạn có thể tạo issue tại [trang Issues](https://github.com/Khoa180806/Port_Detective/issues).
+Mọi đóng góp, báo cáo lỗi hoặc đề xuất tính năng mới đều được hoan nghênh nhiệt tình! Bạn có thể tạo issue tại [trang Issues](https://github.com/Khoa180806/Port_Detective/issues) và xem qua [Quy chuẩn đóng góp](docs/contributing.md).
 
 1. Fork dự án về tài khoản của bạn
 2. Tạo nhánh tính năng mới (`git checkout -b feature/TinhNangMoi`)

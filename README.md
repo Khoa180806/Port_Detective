@@ -234,12 +234,18 @@ Port Detective conforms to standard Unix exit code conventions:
 
 ```
 port-detective/
+├── assets/                   # Media assets, screenshots, and interactive demos
 ├── cmd/
 │   ├── pd/main.go            # Primary CLI entry point (pd executable)
 │   ├── root.go               # Cobra root command & dynamic i18n hook
 │   ├── check.go              # `pd check <port>`
 │   ├── kill.go               # `pd kill <port>`
 │   └── scan.go               # `pd scan <start>-<end>`
+├── docs/                     # Technical documentation & guides
+│   ├── architecture.md       # Architecture & cross-platform strategy
+│   ├── cli-reference.md      # Command syntax, flags, and exit codes
+│   ├── contributing.md       # Contribution guidelines & test workflows
+│   └── installation.md       # Detailed installation & troubleshooting
 ├── internal/
 │   ├── i18n/                 # Translation engine (EN / VI message maps)
 │   ├── lookup/               # OS Strategy implementations via Go Build Tags
@@ -249,15 +255,20 @@ port-detective/
 │   │   └── darwin.go         # macOS strategy (lsof)
 │   ├── output/               # High-contrast color text and JSON formatters
 │   └── process/              # Core ProcessInfo domain model
-├── scripts/                  # Automated install and release scripts
-└── docs/                     # Documentation assets and screenshots
+└── scripts/                  # Automated install scripts (install.sh, install.ps1)
 ```
+
+For more in-depth technical details, check out:
+- [Technical Architecture](docs/architecture.md)
+- [CLI Reference Manual](docs/cli-reference.md)
+- [Installation Guide](docs/installation.md)
+- [Contributing Guide](docs/contributing.md)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Khoa180806/Port_Detective/issues).
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Khoa180806/Port_Detective/issues) and read our [Contributing Guide](docs/contributing.md).
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
