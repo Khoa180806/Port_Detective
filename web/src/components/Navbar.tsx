@@ -75,6 +75,8 @@ export function Navbar() {
           <button
             type="button"
             aria-label="Toggle Navigation Menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav-menu"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
           >
@@ -85,7 +87,7 @@ export function Navbar() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-800 bg-slate-950/95 px-4 pt-3 pb-5 space-y-3">
+        <div id="mobile-nav-menu" className="md:hidden border-b border-slate-800 bg-slate-950/95 px-4 pt-3 pb-5 space-y-3">
           <a
             href="#features"
             onClick={() => setMobileMenuOpen(false)}

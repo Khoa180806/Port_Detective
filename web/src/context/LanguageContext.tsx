@@ -6,7 +6,7 @@ import { Locale, translations } from "@/lib/translations";
 interface LanguageContextType {
   locale: Locale;
   setLocale: (l: Locale) => void;
-  t: typeof translations["en"];
+  t: (typeof translations)["en"];
 }
 
 const LanguageContext = createContext<LanguageContextType>({
@@ -16,15 +16,24 @@ const LanguageContext = createContext<LanguageContextType>({
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
-
-  useEffect(() => {
-    // Read from localStorage if available
-    const saved = localStorage.getItem("pd_lang") as Locale | null;
-    if (saved === "en" || saved === "vi") {
-      setLocaleState(saved);
+  const [locale, setLocaleState] = useState<Locale>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("pd_lang") as Locale | null;
+        if (saved === "en" || saved === "vi") {
+          return saved;
+        }
+      } catch {
+        // Fallback to default
+      }
     }
-  }, []);
+    return "en";
+  });
+
+  // Keep <html lang="..."> attribute in sync with selected locale
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   const setLocale = (l: Locale) => {
     setLocaleState(l);

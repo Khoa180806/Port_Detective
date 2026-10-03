@@ -41,7 +41,8 @@ export function InstallTabs() {
     try {
       await navigator.clipboard.writeText(activeOption.command);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      const timer = setTimeout(() => setCopied(false), 2000);
+      return () => clearTimeout(timer);
     } catch {
       // Fallback
     }
@@ -51,10 +52,12 @@ export function InstallTabs() {
     <div className="w-full max-w-2xl mx-auto rounded-xl border border-slate-800 bg-slate-900/90 shadow-2xl backdrop-blur-md overflow-hidden">
       {/* Tab Selectors */}
       <div className="flex border-b border-slate-800/80 bg-slate-950/70 p-1.5 sm:px-3 sm:py-2 items-center justify-between gap-1 overflow-x-auto">
-        <div className="flex items-center gap-1 sm:gap-1.5">
+        <div role="tablist" aria-label="Operating system installation choices" className="flex items-center gap-1 sm:gap-1.5">
           {INSTALL_OPTIONS.map((opt) => (
             <button
               key={opt.id}
+              role="tab"
+              aria-selected={activeTab === opt.id}
               onClick={() => {
                 setActiveTab(opt.id);
                 setCopied(false);

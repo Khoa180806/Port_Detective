@@ -45,14 +45,15 @@ export function TerminalPreview() {
       command: "pd kill 8080",
       description: t.demo.killDesc,
       outputLines: [
-        { text: "WARNING: You are about to kill the following process(es):", color: "text-rose-400", bold: true },
+        { text: "WARNING: Detected process(es) occupying port:", color: "text-rose-400", bold: true },
         { text: "Port 8080 is occupied by:", color: "text-slate-200" },
         { text: "14280", color: "text-rose-400", prefix: "  PID:      ", bold: true },
         { text: "node.exe", color: "text-amber-300", prefix: "  Process:  " },
+        { text: "node server.js", color: "text-slate-500", prefix: "  Command:  " },
         { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
         { text: "", color: "text-transparent" },
-        { text: "Are you sure you want to terminate this process? [y/N]: y", color: "text-sky-300", bold: true },
-        { text: "✔ Successfully terminated process 'node.exe' (PID: 14280).", color: "text-emerald-400", bold: true },
+        { text: "Are you sure you want to KILL all processes above? [y/N]: y", color: "text-sky-300", bold: true },
+        { text: "Terminating PID 14280 (node.exe)... SUCCESS", color: "text-emerald-400", bold: true },
       ],
     },
     scan: {
@@ -61,16 +62,18 @@ export function TerminalPreview() {
       command: "pd scan 3000-3005",
       description: t.demo.scanDesc,
       outputLines: [
-        { text: "Scanning ports 3000 to 3005...", color: "text-sky-400" },
-        { text: "Found 2 active process(es):", color: "text-slate-100", bold: true },
+        { text: "Scanning ports from 3000 to 3005...", color: "text-sky-400" },
+        { text: "Found 2 processes:", color: "text-slate-100", bold: true },
         { text: "3000", color: "text-cyan-400", prefix: "  Port:     ", bold: true },
         { text: "18204", color: "text-rose-400", prefix: "  PID:      " },
         { text: "node.exe", color: "text-amber-300", prefix: "  Process:  " },
+        { text: "node.exe", color: "text-slate-500", prefix: "  Command:  " },
         { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
         { text: "--------------------------------------------------", color: "text-slate-700" },
         { text: "3003", color: "text-cyan-400", prefix: "  Port:     ", bold: true },
         { text: "9142", color: "text-rose-400", prefix: "  PID:      " },
         { text: "docker-proxy", color: "text-amber-300", prefix: "  Process:  " },
+        { text: "docker-proxy", color: "text-slate-500", prefix: "  Command:  " },
         { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
       ],
     },
@@ -130,13 +133,15 @@ export function TerminalPreview() {
         </div>
 
         {/* Command Pill Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6">
+        <div role="tablist" aria-label="Interactive CLI command previews" className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6">
           {(Object.keys(DEMOS) as CommandType[]).map((key) => {
             const item = DEMOS[key];
             const isActive = activeTab === key;
             return (
               <button
                 key={key}
+                role="tab"
+                aria-selected={isActive}
                 onClick={() => {
                   setActiveTab(key);
                   setCopied(false);
