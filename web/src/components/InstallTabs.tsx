@@ -2,44 +2,38 @@
 
 import { useState } from "react";
 import { Check, Copy, Terminal } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 type Platform = "windows" | "unix" | "go";
-
-interface InstallOption {
-  id: Platform;
-  label: string;
-  osBadge: string;
-  command: string;
-  comment: string;
-}
-
-const INSTALL_OPTIONS: InstallOption[] = [
-  {
-    id: "windows",
-    label: "Windows (PowerShell)",
-    osBadge: "Windows x64 / ARM64",
-    command: "iwr -useb https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.ps1 | iex",
-    comment: "# Run in PowerShell — Auto detects arch & configures PATH",
-  },
-  {
-    id: "unix",
-    label: "Linux & macOS",
-    osBadge: "macOS / Linux",
-    command: "curl -sSfL https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.sh | sh",
-    comment: "# Run in Terminal — Zero-config one-liner installer",
-  },
-  {
-    id: "go",
-    label: "Go Install",
-    osBadge: "Go 1.21+",
-    command: "go install github.com/Khoa180806/Port_Detective/cmd/pd@latest",
-    comment: "# Build & install binary directly to your GOPATH/bin",
-  },
-];
 
 export function InstallTabs() {
   const [activeTab, setActiveTab] = useState<Platform>("windows");
   const [copied, setCopied] = useState(false);
+  const { t } = useLanguage();
+
+  const INSTALL_OPTIONS = [
+    {
+      id: "windows" as Platform,
+      label: t.install.windows,
+      osBadge: "Windows x64 / ARM64",
+      command: "iwr -useb https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.ps1 | iex",
+      comment: t.install.winComment,
+    },
+    {
+      id: "unix" as Platform,
+      label: t.install.unix,
+      osBadge: "macOS / Linux",
+      command: "curl -sSfL https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.sh | sh",
+      comment: t.install.unixComment,
+    },
+    {
+      id: "go" as Platform,
+      label: t.install.go,
+      osBadge: "Go 1.21+",
+      command: "go install github.com/Khoa180806/Port_Detective/cmd/pd@latest",
+      comment: t.install.goComment,
+    },
+  ];
 
   const activeOption = INSTALL_OPTIONS.find((opt) => opt.id === activeTab) || INSTALL_OPTIONS[0];
 
@@ -101,7 +95,7 @@ export function InstallTabs() {
           {copied ? (
             <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-sans px-1">
               <Check className="h-4 w-4" />
-              <span className="font-medium">Copied!</span>
+              <span className="font-medium">{t.install.copied}</span>
             </div>
           ) : (
             <Copy className="h-4 w-4" />
@@ -113,11 +107,11 @@ export function InstallTabs() {
       <div className="border-t border-slate-800/80 bg-slate-950/40 px-4 py-2 flex items-center justify-between text-[11px] text-slate-500 font-mono">
         <div className="flex items-center gap-1.5">
           <Terminal className="h-3 w-3 text-sky-500/80" />
-          <span>Verify: <code className="text-slate-400">pd --version</code></span>
+          <span>{t.install.verify} <code className="text-slate-400">pd --version</code></span>
         </div>
         <span className="text-emerald-500/90 flex items-center gap-1">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          Ready immediately after install
+          {t.install.readyImmediately}
         </span>
       </div>
     </div>

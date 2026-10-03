@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Terminal, Play, RotateCcw, Copy, Check } from "lucide-react";
+import { Terminal, RotateCcw, Copy, Check } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 type CommandType = "check" | "kill" | "scan" | "json";
 
@@ -12,84 +13,85 @@ interface CommandDemo {
   description: string;
   outputLines: Array<{
     text: string;
-    color?: string; // Tailwind color class
+    color?: string;
     bold?: boolean;
     prefix?: string;
   }>;
 }
 
-const DEMOS: Record<CommandType, CommandDemo> = {
-  check: {
-    id: "check",
-    title: "pd check",
-    command: "pd check 8080",
-    description: "Instantly identify which application or zombie process is holding port 8080.",
-    outputLines: [
-      { text: "Port 8080 is occupied by:", color: "text-slate-200", bold: true },
-      { text: "14280", color: "text-rose-400", prefix: "  PID:      ", bold: true },
-      { text: "node.exe", color: "text-amber-300", prefix: "  Process:  " },
-      { text: "node server.js", color: "text-slate-500", prefix: "  Command:  " },
-      { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
-    ],
-  },
-  kill: {
-    id: "kill",
-    title: "pd kill",
-    command: "pd kill 8080",
-    description: "Safely terminate port-blocking processes with interactive confirmation prompts.",
-    outputLines: [
-      { text: "WARNING: You are about to kill the following process(es):", color: "text-rose-400", bold: true },
-      { text: "Port 8080 is occupied by:", color: "text-slate-200" },
-      { text: "14280", color: "text-rose-400", prefix: "  PID:      ", bold: true },
-      { text: "node.exe", color: "text-amber-300", prefix: "  Process:  " },
-      { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
-      { text: "", color: "text-transparent" },
-      { text: "Are you sure you want to terminate this process? [y/N]: y", color: "text-sky-300", bold: true },
-      { text: "✔ Successfully terminated process 'node.exe' (PID: 14280).", color: "text-emerald-400", bold: true },
-    ],
-  },
-  scan: {
-    id: "scan",
-    title: "pd scan",
-    command: "pd scan 3000-3005",
-    description: "Scan port ranges concurrently in milliseconds using a Go worker pool.",
-    outputLines: [
-      { text: "Scanning ports 3000 to 3005...", color: "text-sky-400" },
-      { text: "Found 2 active process(es):", color: "text-slate-100", bold: true },
-      { text: "3000", color: "text-cyan-400", prefix: "  Port:     ", bold: true },
-      { text: "18204", color: "text-rose-400", prefix: "  PID:      " },
-      { text: "node.exe", color: "text-amber-300", prefix: "  Process:  " },
-      { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
-      { text: "--------------------------------------------------", color: "text-slate-700" },
-      { text: "3003", color: "text-cyan-400", prefix: "  Port:     ", bold: true },
-      { text: "9142", color: "text-rose-400", prefix: "  PID:      " },
-      { text: "docker-proxy", color: "text-amber-300", prefix: "  Process:  " },
-      { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
-    ],
-  },
-  json: {
-    id: "json",
-    title: "pd --json",
-    command: "pd check 8080 --json",
-    description: "Clean JSON output designed for headless automation, CI/CD, and jq parsing.",
-    outputLines: [
-      { text: "[", color: "text-slate-400" },
-      { text: "  {", color: "text-slate-400" },
-      { text: '    "pid": 14280,', color: "text-rose-400 font-semibold" },
-      { text: '    "name": "node.exe",', color: "text-amber-300" },
-      { text: '    "command": "node server.js",', color: "text-slate-300" },
-      { text: '    "port": 8080,', color: "text-cyan-300" },
-      { text: '    "protocol": "tcp"', color: "text-emerald-400" },
-      { text: "  }", color: "text-slate-400" },
-      { text: "]", color: "text-slate-400" },
-    ],
-  },
-};
-
 export function TerminalPreview() {
   const [activeTab, setActiveTab] = useState<CommandType>("check");
   const [copied, setCopied] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
+  const { t } = useLanguage();
+
+  const DEMOS: Record<CommandType, CommandDemo> = {
+    check: {
+      id: "check",
+      title: "pd check",
+      command: "pd check 8080",
+      description: t.demo.checkDesc,
+      outputLines: [
+        { text: "Port 8080 is occupied by:", color: "text-slate-200", bold: true },
+        { text: "14280", color: "text-rose-400", prefix: "  PID:      ", bold: true },
+        { text: "node.exe", color: "text-amber-300", prefix: "  Process:  " },
+        { text: "node server.js", color: "text-slate-500", prefix: "  Command:  " },
+        { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
+      ],
+    },
+    kill: {
+      id: "kill",
+      title: "pd kill",
+      command: "pd kill 8080",
+      description: t.demo.killDesc,
+      outputLines: [
+        { text: "WARNING: You are about to kill the following process(es):", color: "text-rose-400", bold: true },
+        { text: "Port 8080 is occupied by:", color: "text-slate-200" },
+        { text: "14280", color: "text-rose-400", prefix: "  PID:      ", bold: true },
+        { text: "node.exe", color: "text-amber-300", prefix: "  Process:  " },
+        { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
+        { text: "", color: "text-transparent" },
+        { text: "Are you sure you want to terminate this process? [y/N]: y", color: "text-sky-300", bold: true },
+        { text: "✔ Successfully terminated process 'node.exe' (PID: 14280).", color: "text-emerald-400", bold: true },
+      ],
+    },
+    scan: {
+      id: "scan",
+      title: "pd scan",
+      command: "pd scan 3000-3005",
+      description: t.demo.scanDesc,
+      outputLines: [
+        { text: "Scanning ports 3000 to 3005...", color: "text-sky-400" },
+        { text: "Found 2 active process(es):", color: "text-slate-100", bold: true },
+        { text: "3000", color: "text-cyan-400", prefix: "  Port:     ", bold: true },
+        { text: "18204", color: "text-rose-400", prefix: "  PID:      " },
+        { text: "node.exe", color: "text-amber-300", prefix: "  Process:  " },
+        { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
+        { text: "--------------------------------------------------", color: "text-slate-700" },
+        { text: "3003", color: "text-cyan-400", prefix: "  Port:     ", bold: true },
+        { text: "9142", color: "text-rose-400", prefix: "  PID:      " },
+        { text: "docker-proxy", color: "text-amber-300", prefix: "  Process:  " },
+        { text: "tcp", color: "text-emerald-400", prefix: "  Protocol: " },
+      ],
+    },
+    json: {
+      id: "json",
+      title: "pd --json",
+      command: "pd check 8080 --json",
+      description: t.demo.jsonDesc,
+      outputLines: [
+        { text: "[", color: "text-slate-400" },
+        { text: "  {", color: "text-slate-400" },
+        { text: '    "pid": 14280,', color: "text-rose-400 font-semibold" },
+        { text: '    "name": "node.exe",', color: "text-amber-300" },
+        { text: '    "command": "node server.js",', color: "text-slate-300" },
+        { text: '    "port": 8080,', color: "text-cyan-300" },
+        { text: '    "protocol": "tcp"', color: "text-emerald-400" },
+        { text: "  }", color: "text-slate-400" },
+        { text: "]", color: "text-slate-400" },
+      ],
+    },
+  };
 
   const demo = DEMOS[activeTab];
 
@@ -117,13 +119,13 @@ export function TerminalPreview() {
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
           <div className="inline-flex items-center gap-2 rounded-full border border-sky-500/20 bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-400 mb-3">
             <Terminal className="h-3.5 w-3.5" />
-            <span>Interactive CLI Preview</span>
+            <span>{t.demo.badge}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            See Port Detective in Action
+            {t.demo.title}
           </h2>
           <p className="mt-3 text-sm sm:text-base text-slate-400">
-            Click any command below to test the syntax and see genuine terminal output.
+            {t.demo.subtitle}
           </p>
         </div>
 
@@ -172,7 +174,7 @@ export function TerminalPreview() {
                 className="flex items-center gap-1.5 rounded bg-slate-800 px-2 py-1 text-xs text-slate-300 hover:bg-slate-700 hover:text-white transition"
               >
                 <RotateCcw className={`h-3 w-3 ${isSimulating ? "animate-spin" : ""}`} />
-                <span className="hidden sm:inline">Replay</span>
+                <span className="hidden sm:inline">{t.demo.replay}</span>
               </button>
               <button
                 onClick={handleCopy}
@@ -182,12 +184,12 @@ export function TerminalPreview() {
                 {copied ? (
                   <>
                     <Check className="h-3 w-3 text-emerald-400" />
-                    <span className="text-emerald-400">Copied</span>
+                    <span className="text-emerald-400">{t.demo.copied}</span>
                   </>
                 ) : (
                   <>
                     <Copy className="h-3 w-3" />
-                    <span className="hidden sm:inline">Copy</span>
+                    <span className="hidden sm:inline">{t.demo.copy}</span>
                   </>
                 )}
               </button>
@@ -209,7 +211,7 @@ export function TerminalPreview() {
             {isSimulating ? (
               <div className="py-8 flex items-center justify-center gap-2 text-slate-500 text-xs">
                 <span className="inline-block h-2 w-2 rounded-full bg-sky-400 animate-ping" />
-                <span>Executing native Go routine...</span>
+                <span>{t.demo.executing}</span>
               </div>
             ) : (
               <div className="space-y-1">
@@ -234,12 +236,12 @@ export function TerminalPreview() {
           {/* Terminal Status / Help text */}
           <div className="border-t border-slate-800/80 bg-slate-900/50 px-4 py-2.5 flex items-center justify-between text-xs text-slate-400 font-sans">
             <p className="truncate mr-4">
-              <span className="text-slate-500 font-mono mr-1.5">Info:</span>
+              <span className="text-slate-500 font-mono mr-1.5">{t.demo.infoPrefix}</span>
               {demo.description}
             </p>
             <div className="flex items-center gap-1.5 font-mono text-[11px] text-slate-500 shrink-0">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              <span>Exit Code: 0</span>
+              <span>{t.demo.exitCode}</span>
             </div>
           </div>
         </div>

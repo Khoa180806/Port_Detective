@@ -3,9 +3,12 @@
 import { useState } from "react";
 import { Terminal, Menu, X, BookOpen, Download } from "lucide-react";
 import { GithubIcon } from "./GithubIcon";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/75 backdrop-blur-md">
@@ -26,13 +29,13 @@ export function Navbar() {
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
           <a href="#features" className="hover:text-white transition-colors">
-            Features
+            {t.nav.features}
           </a>
           <a href="#demo" className="hover:text-white transition-colors">
-            Demo
+            {t.nav.demo}
           </a>
           <a href="#benchmark" className="hover:text-white transition-colors">
-            Benchmark
+            {t.nav.benchmark}
           </a>
           <a
             href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/cli-reference.md"
@@ -41,12 +44,13 @@ export function Navbar() {
             className="flex items-center gap-1.5 hover:text-white transition-colors"
           >
             <BookOpen className="h-4 w-4" />
-            Docs
+            {t.nav.docs}
           </a>
         </nav>
 
-        {/* Action Buttons */}
+        {/* Action Buttons & Language Switcher */}
         <div className="hidden md:flex items-center gap-3">
+          <LanguageSwitcher />
           <a
             href="https://github.com/Khoa180806/Port_Detective"
             target="_blank"
@@ -61,19 +65,22 @@ export function Navbar() {
             className="flex items-center gap-1.5 rounded-lg bg-sky-500 px-3.5 py-1.5 text-sm font-medium text-slate-950 transition hover:bg-sky-400 font-semibold shadow-sm shadow-sky-500/30"
           >
             <Download className="h-4 w-4" />
-            <span>Install</span>
+            <span>{t.nav.install}</span>
           </a>
         </div>
 
-        {/* Mobile menu toggle */}
-        <button
-          type="button"
-          aria-label="Toggle Navigation Menu"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
-        >
-          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        {/* Mobile menu toggle & Language */}
+        <div className="flex md:hidden items-center gap-2">
+          <LanguageSwitcher />
+          <button
+            type="button"
+            aria-label="Toggle Navigation Menu"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu Dropdown */}
@@ -84,21 +91,21 @@ export function Navbar() {
             onClick={() => setMobileMenuOpen(false)}
             className="block py-2 text-sm font-medium text-slate-300 hover:text-white"
           >
-            Features
+            {t.nav.features}
           </a>
           <a
             href="#demo"
             onClick={() => setMobileMenuOpen(false)}
             className="block py-2 text-sm font-medium text-slate-300 hover:text-white"
           >
-            Demo
+            {t.nav.demo}
           </a>
           <a
             href="#benchmark"
             onClick={() => setMobileMenuOpen(false)}
             className="block py-2 text-sm font-medium text-slate-300 hover:text-white"
           >
-            Benchmark
+            {t.nav.benchmark}
           </a>
           <a
             href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/cli-reference.md"
@@ -107,7 +114,7 @@ export function Navbar() {
             className="flex items-center gap-2 py-2 text-sm font-medium text-slate-300 hover:text-white"
           >
             <BookOpen className="h-4 w-4" />
-            Docs
+            {t.nav.docs}
           </a>
           <div className="pt-2 flex gap-3">
             <a
@@ -125,7 +132,7 @@ export function Navbar() {
               className="flex-1 flex justify-center items-center gap-1.5 rounded-lg bg-sky-500 py-2 text-sm font-semibold text-slate-950"
             >
               <Download className="h-4 w-4" />
-              Install
+              {t.nav.install}
             </a>
           </div>
         </div>
