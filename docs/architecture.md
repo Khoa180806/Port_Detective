@@ -38,7 +38,7 @@ The system diagram below illustrates the flow from terminal input through Cobra 
 
 <div align="center">
 
-![Port Detective System Architecture](../assets/architecture.svg)
+![Port Detective System Architecture](../assets/architecture.png)
 
 </div>
 

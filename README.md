@@ -201,7 +201,7 @@ Port Detective leverages Go build tags and the Strategy Pattern for compile-time
 
 <div align="center">
 
-![Port Detective System Architecture](assets/architecture.svg)
+![Port Detective System Architecture](assets/architecture.png)
 
 </div>
 

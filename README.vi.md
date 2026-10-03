@@ -201,7 +201,7 @@ Port Detective áp dụng Go Build Tags và Strategy Pattern để phân nhánh 
 
 <div align="center">
 
-![Sơ đồ kiến trúc Port Detective](assets/architecture.svg)
+![Sơ đồ kiến trúc Port Detective](assets/architecture.png)
 
 </div>
 
