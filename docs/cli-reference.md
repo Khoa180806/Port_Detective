@@ -71,7 +71,7 @@ $ pd check 8080 --json
 When a port is unoccupied:
 ```bash
 $ pd check 9999
-Port 9999 is free.
+No process found running on port 9999.
 ```
 
 ---
@@ -92,7 +92,7 @@ pd kill <port> [flags]
 
 #### Safety Safeguards
 
-1. **Interactive Prompt:** By default, `pd kill` identifies the process and asks for confirmation (`Are you sure? [y/N]`) before sending a kill signal.
+1. **Interactive Prompt:** By default, `pd kill` identifies all processes occupying the port, prints their details, and asks for confirmation (`Are you sure you want to KILL all processes above? [y/N]: `) before sending a kill signal.
 2. **Dry Run Mode:** With `--dry-run`, you can inspect what would be killed without making any changes to running services.
 
 #### Examples
@@ -100,21 +100,41 @@ pd kill <port> [flags]
 **Interactive mode:**
 ```bash
 $ pd kill 8080
-Port 8080 is occupied by process 'node.exe' (PID: 14280).
-Do you want to kill this process? [y/N]: y
-Successfully terminated process 'node.exe' (PID: 14280).
+WARNING: Detected process(es) occupying port:
+Port 8080 is occupied by:
+  PID:      14280
+  Process:  node.exe
+  Command:  node server.js
+  Protocol: tcp
+
+Are you sure you want to KILL all processes above? [y/N]: y
+Terminating PID 14280 (node.exe)... SUCCESS
 ```
 
 **Non-interactive (force kill):**
 ```bash
 $ pd kill 8080 --force
-Successfully terminated process 'node.exe' (PID: 14280).
+WARNING: Detected process(es) occupying port:
+Port 8080 is occupied by:
+  PID:      14280
+  Process:  node.exe
+  Command:  node server.js
+  Protocol: tcp
+
+Terminating PID 14280 (node.exe)... SUCCESS
 ```
 
 **Dry run:**
 ```bash
 $ pd kill 8080 --dry-run
-[DRY-RUN] Would terminate process 'node.exe' (PID: 14280) on port 8080. No action taken.
+WARNING: Detected process(es) occupying port:
+Port 8080 is occupied by:
+  PID:      14280
+  Process:  node.exe
+  Command:  node server.js
+  Protocol: tcp
+
+[DRY RUN] No processes will be terminated.
 ```
 
 ---
@@ -140,41 +160,38 @@ pd scan <start-port>-<end-port> [flags]
 **Human-readable scan:**
 ```bash
 $ pd scan 3000-3005
-Scanning ports 3000 to 3005...
-
-Port  Status  PID    Process
-3000  BUSY    18204  node.exe
-3001  FREE    -      -
-3002  FREE    -      -
-3003  BUSY    9142   docker-proxy
-3004  FREE    -      -
-3005  FREE    -      -
+Scanning ports from 3000 to 3005...
+Found 2 processes:
+  Port:     3000
+  PID:      18204
+  Process:  node.exe
+  Command:  node.exe
+  Protocol: tcp
+--------------------------------------------------
+  Port:     3003
+  PID:      9142
+  Process:  docker-proxy
+  Command:  docker-proxy
+  Protocol: tcp
 ```
 
 **JSON scan output:**
 ```bash
-$ pd scan 3000-3002 --json
+$ pd scan 3000-3005 --json
 [
   {
+    "pid": 18204,
+    "name": "node.exe",
+    "command": "node.exe",
     "port": 3000,
-    "status": "BUSY",
-    "process": {
-      "pid": 18204,
-      "name": "node.exe",
-      "command": "node.exe",
-      "port": 3000,
-      "protocol": "tcp"
-    }
+    "protocol": "tcp"
   },
   {
-    "port": 3001,
-    "status": "FREE",
-    "process": null
-  },
-  {
-    "port": 3002,
-    "status": "FREE",
-    "process": null
+    "pid": 9142,
+    "name": "docker-proxy",
+    "command": "docker-proxy",
+    "port": 3003,
+    "protocol": "tcp"
   }
 ]
 ```
