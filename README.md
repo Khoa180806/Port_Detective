@@ -5,6 +5,7 @@
 </p>
 
 <p align="center">
+  <a href="https://port-detective.vercel.app"><img src="https://img.shields.io/badge/Website-port--detective.vercel.app-0ea5e9?style=flat-square&logo=vercel" alt="Landing Page"></a>
   <a href="https://github.com/Khoa180806/Port_Detective/releases"><img src="https://img.shields.io/github/v/release/Khoa180806/Port_Detective?style=flat-square&color=blue" alt="Release"></a>
   <a href="https://golang.org/"><img src="https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat-square&logo=go" alt="Go Version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"></a>
@@ -12,7 +13,7 @@
 </p>
 
 <p align="center">
-  🌐 <strong>English</strong> | <a href="README.vi.md">🇻🇳 Tiếng Việt</a>
+  🌐 <strong>English</strong> | <a href="README.vi.md">🇻🇳 Tiếng Việt</a> | 🚀 <a href="https://port-detective.vercel.app"><strong>Live Website</strong></a>
 </p>
 
 ---
