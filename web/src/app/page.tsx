@@ -1,6 +1,8 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { TerminalPreview } from "@/components/TerminalPreview";
+import { Features } from "@/components/Features";
+import { Benchmark } from "@/components/Benchmark";
 
 export default function Home() {
   return (
@@ -9,6 +11,8 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <TerminalPreview />
+        <Features />
+        <Benchmark />
       </main>
     </div>
   );
