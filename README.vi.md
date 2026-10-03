@@ -1,143 +1,112 @@
 # 🔍 Port Detective
 
-<p align="center">
-  <strong>Công cụ dòng lệnh (CLI) siêu tốc, cross-platform giúp tra cứu và dừng (kill) các tiến trình đang chiếm giữ port mạng.</strong>
-</p>
+<div align="center">
+
+<h3>Công cụ dòng lệnh (CLI) siêu tốc, cross-platform giúp tra cứu và giải phóng các port mạng đang bị chiếm dụng.</h3>
 
 <p align="center">
   <a href="https://port-detective.vercel.app"><img src="https://img.shields.io/badge/Website-port--detective.vercel.app-0ea5e9?style=flat-square&logo=vercel" alt="Trang chủ Landing Page"></a>
-  <a href="https://github.com/Khoa180806/Port_Detective/releases"><img src="https://img.shields.io/github/v/release/Khoa180806/Port_Detective?style=flat-square&color=blue" alt="Release"></a>
-  <a href="https://golang.org/"><img src="https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat-square&logo=go" alt="Phiên bản Go"></a>
+  <a href="https://github.com/Khoa180806/Port_Detective/releases"><img src="https://img.shields.io/github/v/release/Khoa180806/Port_Detective?style=flat-square&color=blue" alt="Bản phát hành"></a>
+  <a href="https://golang.org/"><img src="https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat-square&logo=go" alt="Phiên bản Go"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="Giấy phép"></a>
   <a href="https://github.com/Khoa180806/Port_Detective/actions"><img src="https://img.shields.io/github/actions/workflow/status/Khoa180806/Port_Detective/release.yml?style=flat-square&label=build" alt="Trạng thái Build"></a>
 </p>
 
 <p align="center">
-  <a href="README.md">🇬🇧 English</a> | 🌐 <strong>Tiếng Việt</strong> | 🚀 <a href="https://port-detective.vercel.app"><strong>Xem Website</strong></a>
+  <a href="README.md">🇬🇧 English</a> · 🌐 <strong>Tiếng Việt</strong> · 🚀 <a href="https://port-detective.vercel.app"><strong>Xem Web App</strong></a> · 📖 <a href="docs/cli-reference.md"><strong>Tài liệu Docs</strong></a>
 </p>
 
----
-
-<p align="center">
-  <img src="assets/demo.gif" alt="Port Detective Demo Tương Tác" width="100%" />
-</p>
+</div>
 
 ---
 
-## 📑 Mục lục
-
-- [Tổng quan](#-tổng-quan)
-- [Tính năng nổi bật](#-tính-năng-nổi-bật)
-- [Cài đặt](#-cài-đặt)
-  - [1. Script cài đặt tự động (Dùng ngay, Zero-Config)](#1-script-cài-đặt-tự-động-dùng-ngay-zero-config)
-  - [2. Cài đặt qua Go Install](#2-cài-đặt-qua-go-install)
-  - [3. Tải Binary biên dịch sẵn](#3-tải-binary-biên-dịch-sẵn)
-  - [4. Tự build từ mã nguồn](#4-tự-build-từ-mã-nguồn)
-- [Hướng dẫn sử dụng](#-hướng-dẫn-sử-dụng)
-  - [Kiểm tra port (`check`)](#1-kiểm-tra-port-check)
-  - [Dừng tiến trình (`kill`)](#2-dừng-tiến-trình-kill)
-  - [Quét dải port (`scan`)](#3-quét-dải-port-scan)
-  - [Hỗ trợ đa ngôn ngữ (`--lang`)](#4-hỗ-trợ-đa-ngôn-ngữ---lang)
-- [Quy ước mã thoát (Exit Codes)](#-quy-ước-mã-thoát-exit-codes)
-- [Kiến trúc & Thiết kế](#-kiến-trúc--thiết-kế)
-- [Đóng góp phát triển](#-đóng-góp-phát-triển)
-- [Giấy phép](#-giấy-phép)
+<div align="center">
+  <img src="assets/demo.gif" alt="Port Detective Demo Tương Tác" width="95%" />
+</div>
 
 ---
 
-## 💡 Tổng quan
+## ⚡ Khởi động nhanh trong 30 giây
 
-Đã bao giờ bạn gặp lỗi kinh điển `Error: listen EADDRINUSE: address already in use :::8080` khi khởi động server dự án chưa?
-
-Việc tìm xem tiến trình chạy ngầm nào đang chiếm dụng port thường đòi hỏi phải nhớ những câu lệnh hệ thống phức tạp và dài dòng (`netstat -ano | findstr`, `lsof -i :8080`, `kill -9`). **Port Detective** giúp giải quyết sự phiền toái này chỉ bằng một câu lệnh duy nhất, thanh lịch và nhất quán trên mọi hệ điều hành:
+Bạn gặp lỗi kinh điển `Error: listen EADDRINUSE: address already in use :::8080` khi khởi chạy dev server? Xử lý ngay chỉ với vài thao tác ngắn gọn:
 
 ```bash
+# 1. Cài đặt tự động qua script một dòng lệnh
+curl -sSfL https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.sh | sh
+
+# 2. Kiểm tra tiến trình nào đang chiếm giữ port 8080
 pd check 8080
+
+# 3. Dừng tiến trình và giải phóng port
 pd kill 8080 --force
 ```
 
 ---
 
-## ✨ Tính năng nổi bật
+## 🚀 Tính năng nổi bật
 
-- **🚀 Native Cross-Platform**: Tối ưu riêng cho từng hệ điều hành: Windows (`netstat`/`tasklist`), Linux (`lsof` kèm cơ chế fallback đọc `/proc/net`), và macOS (`lsof`).
-- **⚡ Siêu tốc & Nhẹ**: Không cần môi trường máy ảo hay runtime nặng nề; được biên dịch trực tiếp thành một file nhị phân (binary) duy nhất.
-- **🛡️ An toàn mặc định**: Tự động hiển thị câu hỏi xác nhận (`[y/N]`) và hỗ trợ chế độ xem trước (`--dry-run`) trước khi dừng bất kỳ tiến trình nào.
-- **🎨 Giao diện Terminal đẹp mắt**: Tô màu cú pháp tương phản cao với thư viện `fatih/color`.
-- **🤖 Tối ưu cho tự động hóa**: Hỗ trợ cờ `--json` ở tất cả các lệnh để dễ dàng tích hợp vào script CI/CD hoặc pipeline tự động.
-- **🌐 Song ngữ chuẩn**: Hỗ trợ đầy đủ tiếng Anh (mặc định) và tiếng Việt tự nhiên (`--lang vi` hoặc `PORT_DETECTIVE_LANG=vi`).
-- **🔍 Quét dải port hàng loạt**: Sử dụng Worker Pool bất đồng bộ để quét hàng trăm port trong tích tắc.
+| Điểm mạnh | Chi tiết kỹ thuật |
+| :--- | :--- |
+| **🚀 Native Cross-Platform** | Tối ưu chuyên biệt cho từng hệ điều hành: Windows (`netstat`/`tasklist`), Linux (`lsof` với cơ chế fallback đọc `/proc/net`), và macOS (`lsof`). |
+| **⚡ Siêu tốc & Nhẹ** | Không phụ thuộc runtime nặng (không cần Node.js, Python, JVM). Biên dịch thành 1 file nhị phân duy nhất, khởi động trong vài mili-giây. |
+| **🛡️ An toàn mặc định** | Luôn yêu cầu xác nhận trước khi kill (`[y/N]`), hỗ trợ chế độ xem trước an toàn `--dry-run`, bảo vệ tiến trình hệ thống trọng yếu. |
+| **🎨 Giao diện Terminal trực quan** | Bảng hiển thị thông tin rõ ràng, tô màu cú pháp tương phản cao với `fatih/color`. |
+| **🤖 Sẵn sàng cho CI/CD** | Cờ `--json` hỗ trợ đầy đủ trên tất cả câu lệnh, giúp dễ dàng tích hợp vào script bash, PowerShell hoặc lệnh `jq`. |
+| **🌐 Song ngữ tích hợp** | Chuyển đổi linh hoạt giữa tiếng Anh và tiếng Việt (`--lang vi` hoặc biến môi trường `PORT_DETECTIVE_LANG=vi`). |
+| **🔍 Quét dải port tốc độ cao** | Sử dụng worker pool goroutine bất đồng bộ để quét hàng ngàn port trong tích tắc. |
 
 ---
 
-## 📦 Cài đặt
+## 📦 Hướng dẫn cài đặt
 
-### 1. Script cài đặt tự động (Dùng ngay, Zero-Config)
+### Cách 1: Script cài đặt tự động (Khuyên dùng)
 
-Cài đặt tức thì chỉ bằng đúng 1 câu lệnh. Script sẽ tự động nhận diện hệ điều hành và kiến trúc chip máy bạn, tải bản binary chuẩn nhất, đặt vào thư mục trong PATH và kích hoạt lệnh `pd` để sử dụng ngay lập tức:
+Tự động nhận diện hệ điều hành và kiến trúc CPU, tải bản phát hành phù hợp, kiểm tra mã băm checksum và cấu hình biến môi trường `PATH`:
 
-**Linux & macOS:**
+<table>
+<tr>
+<td><b>Linux & macOS</b></td>
+<td><b>Windows (PowerShell)</b></td>
+</tr>
+<tr>
+<td>
+
 ```bash
 curl -sSfL https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.sh | sh
 ```
 
-**Windows (PowerShell):**
+</td>
+<td>
+
 ```powershell
 iwr -useb https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.ps1 | iex
 ```
 
----
+</td>
+</tr>
+</table>
 
-### 2. Cài đặt qua Go Install
-
-Nếu máy bạn đã cài sẵn môi trường Golang:
-
+### Cách 2: Cài đặt qua Go Toolchain
 ```bash
 go install github.com/Khoa180806/Port_Detective/cmd/pd@latest
 ```
 
-*(Đảm bảo thư mục `$GOPATH/bin` hoặc `%USERPROFILE%\go\bin` đã nằm trong biến môi trường `PATH` của máy).*
+### Cách 3: Tải file binary trực tiếp từ GitHub Releases
+Tải bản phát hành mới nhất từ [GitHub Releases](https://github.com/Khoa180806/Port_Detective/releases):
+- **Windows:** `port-detective_Windows_x86_64.zip` / `arm64.zip`
+- **Linux:** `port-detective_Linux_x86_64.tar.gz` / `arm64.tar.gz`
+- **macOS:** `port-detective_Darwin_x86_64.tar.gz` / `arm64.tar.gz`
 
 ---
 
-### 3. Tải Binary biên dịch sẵn
+## 🛠️ Trải nghiệm các câu lệnh
 
-Tải file nén binary cùng mã băm checksum tương ứng trực tiếp từ trang [GitHub Releases](https://github.com/Khoa180806/Port_Detective/releases):
-
-| Hệ điều hành | Kiến trúc CPU | Định dạng đóng gói |
-|---|---|---|
-| **Windows** | x86_64 / arm64 | `.zip` |
-| **Linux** | x86_64 / arm64 | `.tar.gz` |
-| **macOS** | x86_64 / Apple Silicon (arm64) | `.tar.gz` |
-
----
-
-### 4. Tự build từ mã nguồn
+### 1. `pd check <port>`
+Kiểm tra thông tin tiến trình đang chiếm port dạng bảng màu hoặc JSON:
 
 ```bash
-git clone https://github.com/Khoa180806/Port_Detective.git
-cd Port_Detective
-go build -o pd.exe ./cmd/pd    # Trên Windows
-# hoặc: go build -o pd ./cmd/pd # Trên Linux/macOS
-```
-
----
-
-## 🚀 Hướng dẫn sử dụng
-
-### 1. Kiểm tra port (`check`)
-
-Kiểm tra xem tiến trình nào đang lắng nghe hoặc chiếm giữ port:
-
-```bash
-# Hiển thị trực quan có màu sắc
 pd check 8080
-
-# Xuất kết quả dưới định dạng JSON
-pd check 8080 --json
 ```
-
-**Ví dụ đầu ra:**
 ```text
 Port 8080 is occupied by:
   PID:      14280
@@ -146,7 +115,9 @@ Port 8080 is occupied by:
   Protocol: tcp
 ```
 
-**Ví dụ đầu ra (JSON):**
+```bash
+pd check 8080 --json
+```
 ```json
 [
   {
@@ -159,126 +130,92 @@ Port 8080 is occupied by:
 ]
 ```
 
----
-
-### 2. Dừng tiến trình (`kill`)
-
-Dừng (kill) các tiến trình đang chiếm giữ một port cụ thể:
+### 2. `pd kill <port>`
+Dừng tiến trình đang chiếm giữ port:
 
 ```bash
-# Chế độ tương tác (hỏi xác nhận [y/N] trước khi thực hiện)
+# Chế độ tương tác (hỏi xác nhận trước):
 pd kill 8080
 
-# Buộc dừng ngay lập tức, bỏ qua bước xác nhận
+# Buộc dừng tức thì không cần hỏi:
 pd kill 8080 --force
 
-# Xem trước các tiến trình sẽ bị dừng mà không thực sự kill
+# Chạy thử nghiệm xem trước, không can thiệp tiến trình:
 pd kill 8080 --dry-run
 ```
 
-<p align="center">
-  <img src="assets/check_demo.png" alt="Demo Lệnh Check và Kill" width="90%" />
-</p>
+<div align="center">
+  <img src="assets/check_demo.png" alt="Demo Check và Kill" width="90%" />
+</div>
 
----
-
-### 3. Quét dải port (`scan`)
-
-Quét đồng thời một dải port bằng Worker Pool bất đồng bộ tốc độ cao:
+### 3. `pd scan <start-port>-<end-port>`
+Quét đồng thời một dải port bằng worker pool:
 
 ```bash
-# Quét một dải port
 pd scan 3000-3005
-
-# Xuất danh sách port đang mở ra JSON
-pd scan 8000-8080 --json
+```
+```text
+Scanning ports from 3000 to 3005...
+Found 2 processes:
+  Port:     3000
+  PID:      18204
+  Process:  node.exe
+  Command:  node.exe
+  Protocol: tcp
+--------------------------------------------------
+  Port:     3003
+  PID:      9142
+  Process:  docker-proxy
+  Command:  docker-proxy
+  Protocol: tcp
 ```
 
-<p align="center">
-  <img src="assets/scan_demo.png" alt="Demo Lệnh Scan Port" width="90%" />
-</p>
+<div align="center">
+  <img src="assets/scan_demo.png" alt="Demo Scan Port" width="90%" />
+</div>
 
 ---
 
-### 4. Hỗ trợ đa ngôn ngữ (`--lang`)
+## 📐 Sơ đồ kiến trúc hệ thống
 
-Port Detective hỗ trợ song ngữ tiếng Anh và tiếng Việt. Ngôn ngữ mặc định là tiếng Anh:
+Port Detective áp dụng Go Build Tags và Strategy Pattern để phân nhánh thực thi đa nền tảng ngay từ lúc biên dịch:
 
-```bash
-# Sử dụng tiếng Anh (Mặc định)
-pd check 8080
+<div align="center">
 
-# Chuyển sang tiếng Việt qua cờ tham số
-pd --lang vi check 8080
-pd --lang vi --help
+![Sơ đồ kiến trúc Port Detective](assets/architecture.svg)
 
-# Hoặc thiết lập toàn hệ thống qua biến môi trường
-export PORT_DETECTIVE_LANG=vi    # Linux/macOS
-$env:PORT_DETECTIVE_LANG="vi"    # Windows PowerShell
-```
+</div>
+
+> [!NOTE]
+> Để tìm hiểu chi tiết về cơ chế đọc `/proc/net/tcp` trên Linux kernel, kỹ thuật phân tích `netstat` trên Windows và worker pool concurrency, bạn có thể tham khảo [Tài liệu Kiến trúc](docs/architecture.md).
 
 ---
 
-## 🚦 Quy ước mã thoát (Exit Codes)
+## 📚 Trung tâm tài liệu (Documentation Hub)
 
-Port Detective tuân thủ quy ước chuẩn của các công cụ dòng lệnh Unix:
+Toàn bộ tài liệu chi tiết được lưu trữ trong thư mục [`docs/`](docs/):
 
-| Mã thoát | Ý nghĩa | Mô tả chi tiết |
-|---|---|---|
-| `0` | **Thành công** | Tìm thấy tiến trình (`check`), đã kill thành công (`kill`), hoặc quét port hoàn tất. |
-| `1` | **Port trống / Hủy lệnh** | Port khả dụng không có ai chiếm, hoặc thao tác bị hủy bởi người dùng. |
-| `2` | **Lỗi** | Số port không hợp lệ, không đủ quyền truy cập, hoặc lỗi lệnh hệ thống. |
-
----
-
-## 🏛️ Kiến trúc & Thiết kế
-
-```
-port-detective/
-├── assets/                   # Thư mục hình ảnh, demo GIF/SVG minh họa
-├── cmd/
-│   ├── pd/main.go            # Entry point chính của ứng dụng (sinh ra binary "pd")
-│   ├── root.go               # Cobra root command & cơ chế i18n hook động
-│   ├── check.go              # Lệnh `pd check <port>`
-│   ├── kill.go               # Lệnh `pd kill <port>`
-│   └── scan.go               # Lệnh `pd scan <start>-<end>`
-├── docs/                     # Tài liệu kỹ thuật chuyên sâu (English)
-│   ├── architecture.md       # Thiết kế kiến trúc & cơ chế đa nền tảng
-│   ├── cli-reference.md      # Chi tiết cú pháp lệnh, cờ tham số và exit codes
-│   ├── contributing.md       # Quy chuẩn đóng góp mã nguồn & workflow kiểm thử
-│   └── installation.md       # Hướng dẫn cài đặt chi tiết & xử lý sự cố
-├── internal/
-│   ├── i18n/                 # Translation engine (bản đồ từ điển EN / VI)
-│   ├── lookup/               # Triển khai OS Strategy qua Go Build Tags
-│   │   ├── lookup.go         # Interface PortLookupStrategy & dispatch
-│   │   ├── windows.go        # Strategy Windows (netstat + tasklist)
-│   │   ├── linux.go          # Strategy Linux (lsof + fallback /proc/net/tcp)
-│   │   └── darwin.go         # Strategy macOS (lsof)
-│   ├── output/               # Formatter xuất text màu sắc tương phản cao và JSON
-│   └── process/              # Core Domain Model struct ProcessInfo
-└── scripts/                  # Script tự động cài đặt (install.sh, install.ps1) & release
-```
-
-Để tìm hiểu sâu hơn về mặt kỹ thuật, bạn có thể tham khảo:
-- [Kiến trúc kỹ thuật (Technical Architecture)](docs/architecture.md)
-- [Cẩm nang tra cứu CLI (CLI Reference Manual)](docs/cli-reference.md)
-- [Hướng dẫn cài đặt chi tiết (Installation Guide)](docs/installation.md)
-- [Hướng dẫn đóng góp (Contributing Guide)](docs/contributing.md)
+| Tài liệu | Nội dung chính |
+| :--- | :--- |
+| [📐 **System Architecture**](docs/architecture.md) | Thiết kế module, cơ chế Go build tags, và mô hình concurrency |
+| [📖 **CLI Reference Guide**](docs/cli-reference.md) | Cú pháp chi tiết các câu lệnh, danh sách flag tham số và mã thoát |
+| [📦 **Installation Guide**](docs/installation.md) | Hướng dẫn cài đặt đa nền tảng, thiết lập quyền hạn và biến PATH |
+| [🤝 **Contributing Guide**](docs/contributing.md) | Môi trường phát triển, chạy unit test và quy trình gửi Pull Request |
 
 ---
 
-## 🤝 Đóng góp phát triển
+## 🚦 Mã thoát chuẩn (POSIX Exit Codes)
 
-Mọi đóng góp, báo cáo lỗi hoặc đề xuất tính năng mới đều được hoan nghênh nhiệt tình! Bạn có thể tạo issue tại [trang Issues](https://github.com/Khoa180806/Port_Detective/issues) và xem qua [Quy chuẩn đóng góp](docs/contributing.md).
-
-1. Fork dự án về tài khoản của bạn
-2. Tạo nhánh tính năng mới (`git checkout -b feature/TinhNangMoi`)
-3. Commit các thay đổi (`git commit -m 'feat: them tinh nang tuyet voi'`)
-4. Đẩy lên nhánh của bạn (`git push origin feature/TinhNangMoi`)
-5. Mở một Pull Request
+| Mã | Trạng thái | Ý nghĩa |
+| :---: | :--- | :--- |
+| `0` | **Thành công** | Đã tìm thấy tiến trình, đã kill thành công, hoặc quét hoàn tất |
+| `1` | **Port trống / Hủy thao tác** | Port đang khả dụng, hoặc người dùng từ chối xác nhận kill (`n`) |
+| `2` | **Không đủ quyền hạn** | Thiếu quyền Administrator hoặc `sudo` để can thiệp tiến trình |
+| `3` | **Tham số không hợp lệ** | Port ngoài dải `1-65535` hoặc dải scan sai định dạng |
+| `4` | **Lỗi hệ thống** | Lỗi trong quá trình thực thi lệnh OS |
 
 ---
 
 ## 📄 Giấy phép
 
-Dự án được phân phối dưới giấy phép mã nguồn mở MIT License - xem file [LICENSE](LICENSE) để biết thêm chi tiết.
+Dự án được phân phối theo giấy phép mã nguồn mở MIT License — xem file [LICENSE](LICENSE) để biết thêm chi tiết.

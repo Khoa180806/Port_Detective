@@ -1,143 +1,112 @@
 # 🔍 Port Detective
 
-<p align="center">
-  <strong>A lightning-fast, cross-platform CLI tool to investigate and terminate processes occupying network ports.</strong>
-</p>
+<div align="center">
+
+<h3>A lightning-fast, cross-platform CLI tool to investigate and terminate processes occupying network ports.</h3>
 
 <p align="center">
   <a href="https://port-detective.vercel.app"><img src="https://img.shields.io/badge/Website-port--detective.vercel.app-0ea5e9?style=flat-square&logo=vercel" alt="Landing Page"></a>
   <a href="https://github.com/Khoa180806/Port_Detective/releases"><img src="https://img.shields.io/github/v/release/Khoa180806/Port_Detective?style=flat-square&color=blue" alt="Release"></a>
-  <a href="https://golang.org/"><img src="https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat-square&logo=go" alt="Go Version"></a>
+  <a href="https://golang.org/"><img src="https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat-square&logo=go" alt="Go Version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"></a>
   <a href="https://github.com/Khoa180806/Port_Detective/actions"><img src="https://img.shields.io/github/actions/workflow/status/Khoa180806/Port_Detective/release.yml?style=flat-square&label=build" alt="Build Status"></a>
 </p>
 
 <p align="center">
-  🌐 <strong>English</strong> | <a href="README.vi.md">🇻🇳 Tiếng Việt</a> | 🚀 <a href="https://port-detective.vercel.app"><strong>Live Website</strong></a>
+  🌐 <strong>English</strong> · <a href="README.vi.md">🇻🇳 Tiếng Việt</a> · 🚀 <a href="https://port-detective.vercel.app"><strong>Live Web App</strong></a> · 📖 <a href="docs/cli-reference.md"><strong>Docs</strong></a>
 </p>
 
----
-
-<p align="center">
-  <img src="assets/demo.gif" alt="Port Detective Interactive Demo" width="100%" />
-</p>
+</div>
 
 ---
 
-## 📑 Table of Contents
-
-- [Overview](#-overview)
-- [Key Features](#-key-features)
-- [Installation](#-installation)
-  - [1. Quick Install Script (Zero-Config)](#1-quick-install-script-zero-config)
-  - [2. Via Go Install](#2-via-go-install)
-  - [3. Pre-built Binaries](#3-pre-built-binaries)
-  - [4. Build From Source](#4-build-from-source)
-- [Usage & Examples](#-usage--examples)
-  - [Check Port (`check`)](#1-check-port-check)
-  - [Kill Process (`kill`)](#2-kill-process-kill)
-  - [Scan Port Range (`scan`)](#3-scan-port-range-scan)
-  - [Language Support (`--lang`)](#4-language-support---lang)
-- [Exit Codes](#-exit-codes)
-- [Architecture & Design](#-architecture--design)
-- [Contributing](#-contributing)
-- [License](#-license)
+<div align="center">
+  <img src="assets/demo.gif" alt="Port Detective Interactive Demo" width="95%" />
+</div>
 
 ---
 
-## 💡 Overview
+## ⚡ Quickstart in 30 Seconds
 
-Ever seen `Error: listen EADDRINUSE: address already in use :::8080` while starting your dev server?
-
-Finding which zombie process or background service is hoarding your port usually involves remembering convoluted OS commands (`netstat -ano | findstr`, `lsof -i :8080`, `kill -9`). **Port Detective** eliminates this frustration with a unified, elegant command:
+Tired of `Error: listen EADDRINUSE: address already in use :::8080`? Resolve it immediately with zero guesswork:
 
 ```bash
+# 1. Install via automated script
+curl -sSfL https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.sh | sh
+
+# 2. Check which process is holding port 8080
 pd check 8080
+
+# 3. Kill it safely
 pd kill 8080 --force
 ```
 
 ---
 
-## ✨ Key Features
+## 🚀 Key Features
 
-- **🚀 Native Cross-Platform**: Purpose-built strategy implementations for Windows (`netstat`/`tasklist`), Linux (`lsof` with `/proc/net` fallback), and macOS (`lsof`).
-- **⚡ Blazing Fast**: Zero heavyweight runtimes; compiled to a single lightweight native binary.
-- **🛡️ Safe by Default**: Interactive confirmation prompt (`[y/N]`) and `--dry-run` mode before terminating any process.
-- **🎨 Beautiful Terminal UI**: High-contrast syntax coloring powered by `fatih/color`.
-- **🤖 Machine Friendly**: Full `--json` flag support across all commands for CI/CD and script automation.
-- **🌐 Bilingual CLI**: Native support for both English (default) and Vietnamese (`--lang vi` or `PORT_DETECTIVE_LANG=vi`).
-- **🔍 Bulk Scanner**: High-throughput concurrent worker pool to scan port ranges in milliseconds.
+| Capability | Highlights |
+| :--- | :--- |
+| **🚀 Native Cross-Platform** | Native strategy engines for Windows (`netstat`/`tasklist`), Linux (`lsof` with kernel `/proc/net` fallback), and macOS (`lsof`). |
+| **⚡ Blazing Fast** | Zero runtime dependencies (no Node.js, Python, or JVM required). Compiles to a single lightweight native binary. |
+| **🛡️ Safe by Default** | Interactive confirmation prompt (`[y/N]`) before killing, plus `--dry-run` inspection and OS critical PID protection. |
+| **🎨 High-Contrast Terminal UI** | Clean colorized tables with distinct highlights for PID, Process Name, Port, and Protocol. |
+| **🤖 Machine & CI/CD Ready** | Strict `--json` output across all commands for script pipelines and `jq` automation. |
+| **🌐 Bilingual CLI** | Built-in instant switching between English (default) and Vietnamese (`--lang vi` or `PORT_DETECTIVE_LANG=vi`). |
+| **🔍 High-Throughput Range Scanner** | Asynchronous goroutine worker pool scanning up to 5,000 ports in milliseconds. |
 
 ---
 
-## 📦 Installation
+## 📦 Installation Options
 
-### 1. Quick Install Script (Zero-Config)
+### Option 1: Automated Script (Recommended)
 
-Install immediately with one command. Automatically detects OS and chip architecture, sets up binary path, and readies the `pd` command for immediate use:
+Detects OS & CPU architecture, downloads the release binary, verifies checksums, and configures `PATH`:
 
-**Linux & macOS:**
+<table>
+<tr>
+<td><b>Linux & macOS</b></td>
+<td><b>Windows (PowerShell)</b></td>
+</tr>
+<tr>
+<td>
+
 ```bash
 curl -sSfL https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.sh | sh
 ```
 
-**Windows (PowerShell):**
+</td>
+<td>
+
 ```powershell
 iwr -useb https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.ps1 | iex
 ```
 
----
+</td>
+</tr>
+</table>
 
-### 2. Via Go Install
-
-If you have Go installed on your workstation:
-
+### Option 2: Go Toolchain
 ```bash
 go install github.com/Khoa180806/Port_Detective/cmd/pd@latest
 ```
 
-*(Ensure `$GOPATH/bin` or `%USERPROFILE%\go\bin` is present in your system `PATH`).*
+### Option 3: Pre-compiled GitHub Release Binaries
+Download directly from [GitHub Releases](https://github.com/Khoa180806/Port_Detective/releases):
+- **Windows:** `port-detective_Windows_x86_64.zip` / `arm64.zip`
+- **Linux:** `port-detective_Linux_x86_64.tar.gz` / `arm64.tar.gz`
+- **macOS:** `port-detective_Darwin_x86_64.tar.gz` / `arm64.tar.gz`
 
 ---
 
-### 3. Pre-built Binaries
+## 🛠️ Command Showcase
 
-Download pre-compiled binaries and checksums from the [GitHub Releases](https://github.com/Khoa180806/Port_Detective/releases) page:
-
-| OS | Architecture | Package Format |
-|---|---|---|
-| **Windows** | x86_64 / arm64 | `.zip` |
-| **Linux** | x86_64 / arm64 | `.tar.gz` |
-| **macOS** | x86_64 / Apple Silicon (arm64) | `.tar.gz` |
-
----
-
-### 4. Build From Source
+### 1. `pd check <port>`
+Inspect processes bound to a port in human table format or structured JSON:
 
 ```bash
-git clone https://github.com/Khoa180806/Port_Detective.git
-cd Port_Detective
-go build -o pd.exe ./cmd/pd    # Windows
-# or: go build -o pd ./cmd/pd # Linux/macOS
-```
-
----
-
-## 🚀 Usage & Examples
-
-### 1. Check Port (`check`)
-
-Inspect which process is currently listening on or occupying a port:
-
-```bash
-# Human-readable colored output
 pd check 8080
-
-# Machine-readable JSON output
-pd check 8080 --json
 ```
-
-**Sample Output:**
 ```text
 Port 8080 is occupied by:
   PID:      14280
@@ -146,7 +115,9 @@ Port 8080 is occupied by:
   Protocol: tcp
 ```
 
-**Sample JSON Output:**
+```bash
+pd check 8080 --json
+```
 ```json
 [
   {
@@ -159,126 +130,92 @@ Port 8080 is occupied by:
 ]
 ```
 
----
-
-### 2. Kill Process (`kill`)
-
-Terminate processes holding a specific port:
+### 2. `pd kill <port>`
+Terminate offending processes interactively or with automation flags:
 
 ```bash
-# Interactive mode (prompts for confirmation [y/N])
+# Interactive mode with confirmation prompt:
 pd kill 8080
 
-# Force termination without prompt
+# Force kill without prompt:
 pd kill 8080 --force
 
-# Preview actions without terminating any process
+# Preview process without terminating:
 pd kill 8080 --dry-run
 ```
 
-<p align="center">
+<div align="center">
   <img src="assets/check_demo.png" alt="Check and Kill Demo" width="90%" />
-</p>
+</div>
 
----
-
-### 3. Scan Port Range (`scan`)
-
-Concurrently scan a range of ports using an asynchronous worker pool:
+### 3. `pd scan <start-port>-<end-port>`
+Concurrently scan a range of ports using a worker pool:
 
 ```bash
-# Scan a range of ports
 pd scan 3000-3005
-
-# Export scan results to JSON
-pd scan 8000-8080 --json
+```
+```text
+Scanning ports from 3000 to 3005...
+Found 2 processes:
+  Port:     3000
+  PID:      18204
+  Process:  node.exe
+  Command:  node.exe
+  Protocol: tcp
+--------------------------------------------------
+  Port:     3003
+  PID:      9142
+  Process:  docker-proxy
+  Command:  docker-proxy
+  Protocol: tcp
 ```
 
-<p align="center">
+<div align="center">
   <img src="assets/scan_demo.png" alt="Scan Ports Demo" width="90%" />
-</p>
+</div>
 
 ---
 
-### 4. Language Support (`--lang`)
+## 📐 System Architecture
 
-Port Detective supports bilingual output (English and Vietnamese). The default is English:
+Port Detective leverages Go build tags and the Strategy Pattern for compile-time cross-platform dispatch:
 
-```bash
-# Use English (Default)
-pd check 8080
+<div align="center">
 
-# Switch to Vietnamese via flag
-pd --lang vi check 8080
-pd --lang vi --help
+![Port Detective System Architecture](assets/architecture.svg)
 
-# Set system-wide via environment variable
-export PORT_DETECTIVE_LANG=vi    # Linux/macOS
-$env:PORT_DETECTIVE_LANG="vi"    # PowerShell
-```
+</div>
+
+> [!NOTE]
+> For in-depth technical details on Linux kernel `/proc/net/tcp` parsing, Windows `netstat` strategy, and worker pool concurrency, see the [Architecture Guide](docs/architecture.md).
 
 ---
 
-## 🚦 Exit Codes
+## 📚 Documentation Hub
 
-Port Detective conforms to standard Unix exit code conventions:
+Explore detailed documentation in the [`docs/`](docs/) directory:
 
-| Exit Code | Meaning | Description |
-|---|---|---|
-| `0` | **Success** | Process found (check), process killed (kill), or ports scanned successfully. |
-| `1` | **Port Free / No Match** | Port is available (check/scan), or action was cancelled by user. |
-| `2` | **Error** | Invalid port number, permission denied, or system command error. |
-
----
-
-## 🏛️ Architecture & Design
-
-```
-port-detective/
-├── assets/                   # Media assets, screenshots, and interactive demos
-├── cmd/
-│   ├── pd/main.go            # Primary CLI entry point (pd executable)
-│   ├── root.go               # Cobra root command & dynamic i18n hook
-│   ├── check.go              # `pd check <port>`
-│   ├── kill.go               # `pd kill <port>`
-│   └── scan.go               # `pd scan <start>-<end>`
-├── docs/                     # Technical documentation & guides
-│   ├── architecture.md       # Architecture & cross-platform strategy
-│   ├── cli-reference.md      # Command syntax, flags, and exit codes
-│   ├── contributing.md       # Contribution guidelines & test workflows
-│   └── installation.md       # Detailed installation & troubleshooting
-├── internal/
-│   ├── i18n/                 # Translation engine (EN / VI message maps)
-│   ├── lookup/               # OS Strategy implementations via Go Build Tags
-│   │   ├── lookup.go         # PortLookupStrategy interface
-│   │   ├── windows.go        # Windows strategy (netstat + tasklist)
-│   │   ├── linux.go          # Linux strategy (lsof + /proc/net/tcp fallback)
-│   │   └── darwin.go         # macOS strategy (lsof)
-│   ├── output/               # High-contrast color text and JSON formatters
-│   └── process/              # Core ProcessInfo domain model
-└── scripts/                  # Automated install scripts (install.sh, install.ps1)
-```
-
-For more in-depth technical details, check out:
-- [Technical Architecture](docs/architecture.md)
-- [CLI Reference Manual](docs/cli-reference.md)
-- [Installation Guide](docs/installation.md)
-- [Contributing Guide](docs/contributing.md)
+| Document | Purpose |
+| :--- | :--- |
+| [📐 **System Architecture**](docs/architecture.md) | Component design, Go build tag strategy, and concurrency models |
+| [📖 **CLI Reference Guide**](docs/cli-reference.md) | Comprehensive command flags, syntax specifications, and exit codes |
+| [📦 **Installation Guide**](docs/installation.md) | Package managers, manual binary installs, permissions, and PATH setup |
+| [🤝 **Contributing Guide**](docs/contributing.md) | Development setup, unit test execution, and pull request guidelines |
 
 ---
 
-## 🤝 Contributing
+## 🚦 POSIX Exit Codes
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Khoa180806/Port_Detective/issues) and read our [Contributing Guide](docs/contributing.md).
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'feat: add some amazing feature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+| Code | Status | Meaning |
+| :---: | :--- | :--- |
+| `0` | **Success** | Process found, process terminated, or scan finished |
+| `1` | **Port Free / Aborted** | Port is available, or interactive kill was declined |
+| `2` | **Permission Denied** | Insufficient permissions (requires Administrator or `sudo`) |
+| `3` | **Invalid Argument** | Malformed port number or range |
+| `4` | **System Failure** | OS lookup mechanism error |
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
