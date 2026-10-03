@@ -220,6 +220,7 @@ Explore detailed documentation in the [`docs/`](docs/) directory:
 | [📖 **CLI Reference Guide**](docs/cli-reference.md) | Comprehensive command flags, syntax specifications, and exit codes |
 | [📦 **Installation Guide**](docs/installation.md) | Package managers, manual binary installs, permissions, and PATH setup |
 | [🤝 **Contributing Guide**](docs/contributing.md) | Development setup, unit test execution, and pull request guidelines |
+| [🗺️ **Project Roadmap**](docs/roadmap.md) | Future vision, feature proposals, and ecosystem expansion plans |
 
 ---
 

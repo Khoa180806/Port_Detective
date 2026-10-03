@@ -220,6 +220,7 @@ Toàn bộ tài liệu chi tiết được lưu trữ trong thư mục [`docs/`]
 | [📖 **CLI Reference Guide**](docs/cli-reference.md) | Cú pháp chi tiết các câu lệnh, danh sách flag tham số và mã thoát |
 | [📦 **Installation Guide**](docs/installation.md) | Hướng dẫn cài đặt đa nền tảng, thiết lập quyền hạn và biến PATH |
 | [🤝 **Contributing Guide**](docs/contributing.md) | Môi trường phát triển, chạy unit test và quy trình gửi Pull Request |
+| [🗺️ **Lộ trình phát triển (Roadmap)**](docs/roadmap.md) | Tầm nhìn tương lai, đề xuất tính năng mới và mở rộng hệ sinh thái |
 
 ---
 
