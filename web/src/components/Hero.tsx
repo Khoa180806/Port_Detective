@@ -4,7 +4,7 @@ import { InstallTabs } from "./InstallTabs";
 
 export function Hero() {
   return (
-    <section className="relative pt-12 pb-16 sm:pt-20 sm:pb-24 overflow-hidden">
+    <section className="relative pt-12 pb-8 sm:pt-16 sm:pb-12 overflow-hidden">
       {/* Background radial gradient glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-sky-500/10 blur-[130px] rounded-full pointer-events-none -z-10" />
 

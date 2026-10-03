@@ -74,13 +74,13 @@ const DEMOS: Record<CommandType, CommandDemo> = {
     description: "Clean JSON output designed for headless automation, CI/CD, and jq parsing.",
     outputLines: [
       { text: "[", color: "text-slate-400" },
-      { text: '  {', color: "text-slate-400" },
-      { text: '    "pid": 14280,', color: "text-amber-300" },
-      { text: '    "name": "node.exe",', color: "text-emerald-300" },
+      { text: "  {", color: "text-slate-400" },
+      { text: '    "pid": 14280,', color: "text-rose-400 font-semibold" },
+      { text: '    "name": "node.exe",', color: "text-amber-300" },
       { text: '    "command": "node server.js",', color: "text-slate-300" },
       { text: '    "port": 8080,', color: "text-cyan-300" },
-      { text: '    "protocol": "tcp"', color: "text-purple-300" },
-      { text: '  }', color: "text-slate-400" },
+      { text: '    "protocol": "tcp"', color: "text-emerald-400" },
+      { text: "  }", color: "text-slate-400" },
       { text: "]", color: "text-slate-400" },
     ],
   },
@@ -111,7 +111,7 @@ export function TerminalPreview() {
   };
 
   return (
-    <section id="demo" className="relative py-16 sm:py-24 scroll-mt-16">
+    <section id="demo" className="relative pt-4 pb-16 sm:pt-6 sm:pb-20 scroll-mt-20">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
@@ -219,7 +219,7 @@ export function TerminalPreview() {
                       <span className="text-slate-400 whitespace-pre">{line.prefix}</span>
                     )}
                     <span
-                      className={`${line.color || "text-slate-300"} ${
+                      className={`whitespace-pre ${line.color || "text-slate-300"} ${
                         line.bold ? "font-bold" : ""
                       }`}
                     >
