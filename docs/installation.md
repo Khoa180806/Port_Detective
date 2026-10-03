@@ -1,101 +1,134 @@
 # 📦 Installation Guide — Port Detective
 
-This guide covers all available methods to install **Port Detective (`pd`)** on Windows, macOS, and Linux.
+<div align="center">
+
+[![Port Detective Documentation](https://img.shields.io/badge/docs-installation-blue?style=flat-square)](../README.md)
+[![Platforms](https://img.shields.io/badge/Platforms-macOS%20%7C%20Linux%20%7C%20Windows-informational?style=flat-square)](../README.md)
+[![Release](https://img.shields.io/badge/release-latest-brightgreen?style=flat-square)](https://github.com/Khoa180806/Port_Detective/releases/latest)
+
+</div>
+
+This guide covers all available methods to install **Port Detective (`pd`)** across Windows, macOS, and Linux.
 
 ---
 
 ## ⚡ Method 1: Automated Script (Recommended)
 
-The automated install scripts download the correct pre-built binary for your operating system and CPU architecture, place it in an appropriate user directory, and ensure it is available on your `PATH`.
+The automated install scripts detect your operating system and CPU architecture, download the corresponding release binary, verify checksums, and configure your system `PATH`.
 
 ### Linux & macOS
 
-Run the following in your terminal:
+Run the following command in your terminal:
+
 ```bash
 curl -sSfL https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.sh | sh
 ```
 
-- **Target location:** `~/.local/bin` (or `/usr/local/bin` if run with sudo)
-- **Supported Architectures:** x86_64, arm64 (Apple Silicon, Raspberry Pi)
+- **Target Destination:** `~/.local/bin` (or `/usr/local/bin` if executed with `sudo`).
+- **Supported Architectures:** `x86_64` (Intel/AMD), `arm64` (Apple Silicon M1/M2/M3/M4, ARM64 servers).
 
 ### Windows (PowerShell)
 
-Open PowerShell and run:
+Open PowerShell and execute:
+
 ```powershell
 iwr -useb https://raw.githubusercontent.com/Khoa180806/Port_Detective/master/scripts/install.ps1 | iex
 ```
 
-- **Target location:** `$HOME\AppData\Local\PortDetective\bin\pd.exe`
-- **Environment:** Automatically persists into your User `PATH` environment variable.
+- **Target Destination:** `$HOME\AppData\Local\PortDetective\bin\pd.exe`
+- **Environment Setup:** Automatically adds the destination directory to your User `PATH` environment variable.
 
 ---
 
 ## 🐹 Method 2: Via Go Toolchain
 
-If you have Go (1.21+) installed on your machine:
+If Go (version 1.21 or higher) is installed on your workstation:
 
 ```bash
 go install github.com/Khoa180806/Port_Detective/cmd/pd@latest
 ```
 
 > [!NOTE]
-> Make sure `$GOPATH/bin` (or `%USERPROFILE%\go\bin` on Windows) is in your system's `PATH`.
+> Ensure that your `$GOPATH/bin` (Linux/macOS) or `%USERPROFILE%\go\bin` (Windows) directory is included in your system's `PATH`.
 
 ---
 
 ## 📥 Method 3: Pre-compiled Binaries (GitHub Releases)
 
-You can download standalone binaries directly from the [GitHub Releases](https://github.com/Khoa180806/Port_Detective/releases/latest) page.
+Standalone binaries are published on the official [GitHub Releases](https://github.com/Khoa180806/Port_Detective/releases/latest) page for every release tag:
 
-1. Download the archive corresponding to your operating system:
-   - **Windows:** `port-detective_Windows_x86_64.zip` or `port-detective_Windows_arm64.zip`
-   - **Linux:** `port-detective_Linux_x86_64.tar.gz` or `port-detective_Linux_arm64.tar.gz`
-   - **macOS:** `port-detective_Darwin_x86_64.tar.gz` or `port-detective_Darwin_arm64.tar.gz`
-2. Extract the archive.
-3. Move the binary (`pd` or `pd.exe`) to a directory in your `PATH` (e.g. `/usr/local/bin` or `C:\Windows\System32`).
+| Platform | Architecture | Archive Package |
+| :--- | :--- | :--- |
+| **Windows** | `x86_64` (64-bit Intel/AMD)<br>`arm64` (Qualcomm Snapdragon / Windows ARM) | `port-detective_Windows_x86_64.zip`<br>`port-detective_Windows_arm64.zip` |
+| **Linux** | `x86_64` (Standard servers/desktops)<br>`arm64` (Raspberry Pi, AWS Graviton) | `port-detective_Linux_x86_64.tar.gz`<br>`port-detective_Linux_arm64.tar.gz` |
+| **macOS** | `x86_64` (Intel Mac)<br>`arm64` (Apple Silicon M-Series) | `port-detective_Darwin_x86_64.tar.gz`<br>`port-detective_Darwin_arm64.tar.gz` |
+
+### Manual Installation Steps:
+1. Download the archive for your operating system.
+2. Extract the archive contents:
+   ```bash
+   tar -xzf port-detective_Darwin_arm64.tar.gz
+   ```
+3. Move the binary into your executable path:
+   ```bash
+   sudo mv pd /usr/local/bin/pd
+   chmod +x /usr/local/bin/pd
+   ```
 
 ---
 
 ## 🔨 Method 4: Build from Source
 
-To compile the latest bleeding-edge build from source:
+To compile the latest commit from the repository:
 
 ```bash
 # Clone the repository
 git clone https://github.com/Khoa180806/Port_Detective.git
 cd Port_Detective
 
-# Build binary
+# Build stripped production binary
 go build -ldflags="-s -w" -o pd ./cmd/pd
 
-# Move to system path (Linux/macOS)
+# Move to system path (Linux / macOS)
 sudo mv pd /usr/local/bin/
 
 # On Windows:
-# move pd.exe C:\Windows\
+# move pd.exe C:\Windows\System32\
 ```
 
 ---
 
-## 🔍 Verifying Installation
+## 🔍 Verifying Your Installation
 
-Verify that `pd` is accessible and working correctly:
+Confirm that `pd` is recognized by your terminal:
 
 ```bash
-pd --version
-pd --help
+$ pd --version
+pd version 1.0.0
+
+$ pd --help
+Port Detective - An instant, cross-platform port & process investigation CLI tool
 ```
 
 ---
 
-## 🛡️ Permission Requirements
+## 🛡️ Permission & Privilege Guidelines
 
-Port Detective requires operating system permissions to query network sockets and terminate processes:
+Port Detective interacts with low-level OS socket tables and process management facilities:
 
-- **Windows:** Standard user accounts can inspect most ports. However, to terminate elevated or system processes, run your terminal (PowerShell / Command Prompt) as **Administrator**.
-- **Linux:** Standard accounts can inspect sockets owned by the current user. To query or kill system services (e.g. Nginx, Docker, PostgreSQL), prepend commands with `sudo`:
+- **Windows:** Standard users can inspect unprivileged ports. Terminating elevated background services requires launching PowerShell or Terminal as **Administrator**.
+- **Linux:** Standard users can inspect processes owned by their UID. Querying or killing system demons (e.g., Docker, Nginx, PostgreSQL, systemd services) requires `sudo`:
   ```bash
   sudo pd check 80
   sudo pd kill 80 --force
   ```
-- **macOS:** Standard users can inspect their own processes. For daemon/root processes, run with `sudo pd check <port>`.
+- **macOS:** Standard users can inspect their local processes. For root-owned services, prepend `sudo pd check <port>`.
+
+---
+
+## 🧭 Navigation
+
+- [📐 System Architecture](./architecture.md)
+- [📖 CLI Reference Guide](./cli-reference.md)
+- [🤝 Contributing Guide](./contributing.md)
+- [🏠 Project Root & README](../README.md)

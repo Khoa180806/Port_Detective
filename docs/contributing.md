@@ -1,6 +1,14 @@
-# 🤝 Contributing Guide
+# 🤝 Contributing Guide — Port Detective
 
-Thank you for your interest in contributing to **Port Detective (`pd`)**! We welcome community contributions, bug reports, and suggestions. This guide covers how to set up your development environment, run tests, and submit high-quality pull requests.
+<div align="center">
+
+[![Port Detective Documentation](https://img.shields.io/badge/docs-contributing-blue?style=flat-square)](../README.md)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/Khoa180806/Port_Detective/pulls)
+
+</div>
+
+Thank you for your interest in contributing to **Port Detective (`pd`)**! We appreciate community contributions, feature ideas, bug fixes, and documentation improvements.
 
 ---
 
@@ -8,9 +16,9 @@ Thank you for your interest in contributing to **Port Detective (`pd`)**! We wel
 
 ### Prerequisites
 - **Go**: Version **1.21** or later installed.
-- **Git**: Configured on your system.
+- **Git**: Configured with your developer identity.
 
-### Getting the Code
+### Clone & Download Dependencies
 ```bash
 git clone https://github.com/Khoa180806/Port_Detective.git
 cd Port_Detective
@@ -19,23 +27,23 @@ go mod download
 
 ---
 
-## 🧪 Development & Testing Workflow
+## 🧪 Testing & Verification Workflow
 
 ### 1. Run Unit Tests
-We advocate for test-driven development (TDD). Ensure all tests pass before making any changes:
+We adhere strictly to test-driven and regression testing practices. Ensure all tests pass before proposing any pull requests:
 
 ```bash
 go test -v ./...
 ```
 
-### 2. Static Analysis & Linting
-Ensure code adheres to idiomatic Go conventions:
+### 2. Format & Linting Check
+Ensure all code conforms to standard Go idioms:
 
 ```bash
-# Format code
+# Format source files
 go fmt ./...
 
-# Static analysis
+# Static vet analysis
 go vet ./...
 ```
 
@@ -55,32 +63,40 @@ GOOS=darwin GOARCH=arm64 go build -o bin/pd-darwin ./cmd/pd
 
 ---
 
-## 📝 Commit Guidelines
+## 📝 Commit Conventions
 
-We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+All commits must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
-- `feat:` A new feature or capability (e.g., `feat: add scan command for port ranges`)
-- `fix:` A bug fix (e.g., `fix: handle edge case when netstat PID is 0`)
-- `refactor:` Code restructuring that neither fixes a bug nor adds a feature
-- `test:` Adding missing tests or correcting existing tests
-- `docs:` Documentation changes only
-- `chore:` Changes to build process, CI workflows, or auxiliary tooling
+| Prefix | Type | Example |
+| :--- | :--- | :--- |
+| `feat:` | New feature or capability | `feat(scan): add concurrency limit flag` |
+| `fix:` | Bug fix | `fix(windows): resolve process name truncation in tasklist` |
+| `refactor:` | Code restructuring without feature change | `refactor(lookup): split socket parsing logic into helper` |
+| `test:` | Adding or modifying unit / integration tests | `test(check): add test cases for unoccupied port responses` |
+| `docs:` | Documentation changes only | `docs(readme): add troubleshooting section` |
+| `chore:` | Build tooling, CI workflows, dependencies | `chore(ci): update release action workflow` |
 
-Keep commits atomic: make small, focused commits with concise, descriptive messages.
+> [!TIP]
+> Keep commits atomic: make focused commits for each individual change rather than large monolithic diffs.
 
 ---
 
-## 🔀 Submitting a Pull Request (PR)
+## 🔀 Pull Request (PR) Checklist
 
-1. Fork the repository and create a feature branch from `master`:
-   ```bash
-   git checkout -b feat/your-feature-name
-   ```
-2. Write clean, idiomatic Go code with accompanying unit tests.
-3. Run `go test -v ./...` and verify cross-compilation passes.
-4. Commit your changes following Conventional Commits.
-5. Push your branch to your fork:
-   ```bash
-   git push origin feat/your-feature-name
-   ```
-6. Open a Pull Request against `master`. Provide a clear summary of your changes, the rationale behind them, and verification steps.
+Before submitting a Pull Request, please ensure you have completed the following checklist:
+
+1. [ ] Created a descriptive branch from `master` (`git checkout -b feat/your-feature-name`).
+2. [ ] Added accompanying unit tests for any new logic or bug fixes.
+3. [ ] All unit tests pass: `go test -v ./...`.
+4. [ ] Code is formatted with `go fmt ./...` and passes `go vet ./...`.
+5. [ ] Verified cross-platform builds (`GOOS=windows`, `GOOS=linux`, `GOOS=darwin`).
+6. [ ] Followed Conventional Commits in your commit messages.
+
+---
+
+## 🧭 Navigation
+
+- [📐 System Architecture](./architecture.md)
+- [📖 CLI Reference Guide](./cli-reference.md)
+- [📦 Installation Guide](./installation.md)
+- [🏠 Project Root & README](../README.md)
