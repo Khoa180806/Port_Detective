@@ -26,6 +26,25 @@
 
 ---
 
+## 📑 Table of Contents
+
+- [⚡ Quickstart in 30 Seconds](#-quickstart-in-30-seconds)
+- [🚀 Key Features](#-key-features)
+- [📦 Installation Options](#-installation-options)
+  - [Option 1: Automated Script (Recommended)](#option-1-automated-script-recommended)
+  - [Option 2: Go Toolchain](#option-2-go-toolchain)
+  - [Option 3: Pre-compiled GitHub Release Binaries](#option-3-pre-compiled-github-release-binaries)
+- [🛠️ Command Showcase](#️-command-showcase)
+  - [1. `pd check <port>`](#1-pd-check-port)
+  - [2. `pd kill <port>`](#2-pd-kill-port)
+  - [3. `pd scan <start-port>-<end-port>`](#3-pd-scan-start-port-end-port)
+- [📐 System Architecture](#-system-architecture)
+- [📚 Documentation Hub](#-documentation-hub)
+- [🚦 POSIX Exit Codes](#-posix-exit-codes)
+- [📄 License](#-license)
+
+---
+
 ## ⚡ Quickstart in 30 Seconds
 
 Tired of `Error: listen EADDRINUSE: address already in use :::8080`? Resolve it immediately with zero guesswork:

@@ -26,6 +26,25 @@
 
 ---
 
+## 📑 Mục lục
+
+- [⚡ Khởi động nhanh trong 30 giây](#-khởi-động-nhanh-trong-30-giây)
+- [🚀 Tính năng nổi bật](#-tính-năng-nổi-bật)
+- [📦 Hướng dẫn cài đặt](#-hướng-dẫn-cài-đặt)
+  - [Cách 1: Script cài đặt tự động (Khuyên dùng)](#cách-1-script-cài-đặt-tự-động-khuyên-dùng)
+  - [Cách 2: Cài đặt qua Go Toolchain](#cách-2-cài-đặt-qua-go-toolchain)
+  - [Cách 3: Tải file binary trực tiếp từ GitHub Releases](#cách-3-tải-file-binary-trực-tiếp-từ-github-releases)
+- [🛠️ Trải nghiệm các câu lệnh](#️-trải-nghiệm-các-câu-lệnh)
+  - [1. `pd check <port>`](#1-pd-check-port)
+  - [2. `pd kill <port>`](#2-pd-kill-port)
+  - [3. `pd scan <start-port>-<end-port>`](#3-pd-scan-start-port-end-port)
+- [📐 Sơ đồ kiến trúc hệ thống](#-sơ-đồ-kiến-trúc-hệ-thống)
+- [📚 Trung tâm tài liệu (Documentation Hub)](#-trung-tâm-tài-liệu-documentation-hub)
+- [🚦 Mã thoát chuẩn (POSIX Exit Codes)](#-mã-thoát-chuẩn-posix-exit-codes)
+- [📄 Giấy phép](#-giấy-phép)
+
+---
+
 ## ⚡ Khởi động nhanh trong 30 giây
 
 Bạn gặp lỗi kinh điển `Error: listen EADDRINUSE: address already in use :::8080` khi khởi chạy dev server? Xử lý ngay chỉ với vài thao tác ngắn gọn:
