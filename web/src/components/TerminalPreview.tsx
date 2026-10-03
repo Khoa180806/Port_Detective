@@ -111,7 +111,7 @@ export function TerminalPreview() {
   };
 
   return (
-    <section id="demo" className="relative pt-4 pb-16 sm:pt-6 sm:pb-20 scroll-mt-20">
+    <section id="demo" className="relative pt-4 pb-10 sm:pt-6 sm:pb-12 scroll-mt-20">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">

@@ -2,7 +2,7 @@ import { CheckCircle2, XCircle, Clock, Zap } from "lucide-react";
 
 export function Benchmark() {
   return (
-    <section id="benchmark" className="relative py-16 sm:py-24 border-t border-slate-800/80 scroll-mt-16 bg-slate-950/60">
+    <section id="benchmark" className="relative py-10 sm:py-14 border-t border-slate-800/80 scroll-mt-16 bg-slate-950/60">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
