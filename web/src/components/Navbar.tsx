@@ -38,7 +38,7 @@ export function Navbar() {
             {t.nav.benchmark}
           </a>
           <a
-            href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/cli-reference.md"
+            href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/README.md"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 hover:text-white transition-colors"
@@ -110,7 +110,7 @@ export function Navbar() {
             {t.nav.benchmark}
           </a>
           <a
-            href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/cli-reference.md"
+            href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/README.md"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 py-2 text-sm font-medium text-slate-300 hover:text-white"

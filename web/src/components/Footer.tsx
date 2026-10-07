@@ -48,7 +48,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/architecture.md"
+                  href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/02-technical/architecture.md"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition flex items-center gap-1"
@@ -59,7 +59,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/cli-reference.md"
+                  href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/02-technical/api-reference.md"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition flex items-center gap-1"
@@ -70,7 +70,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/installation.md"
+                  href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/01-overview/getting-started.md"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition flex items-center gap-1"
@@ -81,7 +81,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/contributing.md"
+                  href="https://github.com/Khoa180806/Port_Detective/blob/master/docs/01-overview/development-workflow.md"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition flex items-center gap-1"
