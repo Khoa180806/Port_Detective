@@ -40,6 +40,16 @@ These manual steps are slow, error-prone, and inconsistent across operating syst
 - **Built-in Bilingual Support**: Instant runtime language switching between English and Vietnamese (`--lang vi` / `PORT_DETECTIVE_LANG=vi`).
 *(source: [cmd/check.go](file:///d:/Project/PortDetective/cmd/check.go), [cmd/kill.go](file:///d:/Project/PortDetective/cmd/kill.go), [cmd/scan.go](file:///d:/Project/PortDetective/cmd/scan.go))*
 
+<div align="center">
+  <img src="../assets/screenshots/cli-check-kill.png" alt="Terminal output of check and kill operations" width="85%" />
+  <p><em>Figure 1: Inspecting occupied ports and executing safe dry-run preview before termination.</em></p>
+</div>
+
+<div align="center">
+  <img src="../assets/screenshots/cli-scan-range.png" alt="Terminal output of high-throughput range scanner" width="85%" />
+  <p><em>Figure 2: Concurrently scanning contiguous port ranges using Goroutine worker pools.</em></p>
+</div>
+
 ---
 
 ## 4. Technology Stack

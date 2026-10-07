@@ -11,7 +11,6 @@ port-detective/
 ├── .github/
 │   └── workflows/
 │       └── release.yml          # GitHub Actions workflow for GoReleaser automation
-├── assets/                      # Media assets (architecture diagram, screenshots, GIF)
 ├── cmd/
 │   ├── pd/
 │   │   └── main.go              # Primary application entrypoint (compiles to 'pd' binary)
@@ -20,6 +19,9 @@ port-detective/
 │   ├── kill.go                  # 'pd kill <port>' subcommand with safety confirmation
 │   └── scan.go                  # 'pd scan <range>' subcommand with worker pool concurrency
 ├── docs/                        # Complete technical and product documentation
+│   └── assets/                  # Media assets (screenshots, terminal gif, architecture diagram)
+│       ├── screenshots/         # Terminal CLI screenshots and execution demo GIF
+│       └── diagrams/            # Architecture diagrams (PNG, vector SVG)
 ├── internal/
 │   ├── i18n/                    # In-memory dictionary maps (en.go, vi.go, i18n.go)
 │   ├── lookup/                  # Platform strategy implementations using Go build tags

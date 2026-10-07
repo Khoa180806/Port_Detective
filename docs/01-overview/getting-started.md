@@ -79,6 +79,11 @@ Test basic execution:
 ./pd scan 3000-3010
 ```
 
+<div align="center">
+  <img src="../assets/screenshots/terminal-demo.gif" alt="Animated demonstration of Port Detective CLI running check, kill, and scan" width="90%" />
+  <p><em>Figure 1: Successful local execution demonstration across core commands.</em></p>
+</div>
+
 ---
 
 ## 5. Running the Automated Test Suite

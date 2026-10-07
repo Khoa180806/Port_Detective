@@ -21,7 +21,8 @@
 ---
 
 <div align="center">
-  <img src="assets/demo.gif" alt="Port Detective Demo Tương Tác" width="95%" />
+  <img src="docs/assets/screenshots/terminal-demo.gif" alt="Port Detective interactive terminal demonstration showing check, kill, and scan commands" width="95%" />
+  <p><em>Figure 1: Interactive terminal demonstration showing port inspection and process termination.</em></p>
 </div>
 
 ---
@@ -164,7 +165,8 @@ pd kill 8080 --dry-run
 ```
 
 <div align="center">
-  <img src="assets/check_demo.png" alt="Demo Check và Kill" width="90%" />
+  <img src="docs/assets/screenshots/cli-check-kill.png" alt="Terminal output showing pd check and pd kill commands" width="90%" />
+  <p><em>Figure 2: Inspecting port 8080 and executing non-destructive dry-run termination.</em></p>
 </div>
 
 ### 3. `pd scan <start-port>-<end-port>`
@@ -190,7 +192,8 @@ Found 2 processes:
 ```
 
 <div align="center">
-  <img src="assets/scan_demo.png" alt="Demo Scan Port" width="90%" />
+  <img src="docs/assets/screenshots/cli-scan-range.png" alt="Terminal output showing concurrent multi-port scan across port range 3000-3005" width="90%" />
+  <p><em>Figure 3: High-throughput concurrent worker pool scanning ports 3000 to 3005.</em></p>
 </div>
 
 ---
@@ -201,12 +204,13 @@ Port Detective áp dụng Go Build Tags và Strategy Pattern để phân nhánh 
 
 <div align="center">
 
-![Sơ đồ kiến trúc Port Detective](assets/architecture.png)
+![Sơ đồ kiến trúc Port Detective](docs/assets/diagrams/system-architecture.png)
+<p><em>Figure 4: Component architecture and cross-platform strategy dispatch flow.</em></p>
 
 </div>
 
 > [!NOTE]
-> Để tìm hiểu chi tiết về cơ chế đọc `/proc/net/tcp` trên Linux kernel, kỹ thuật phân tích `netstat` trên Windows và worker pool concurrency, bạn có thể tham khảo [Tài liệu Kiến trúc](docs/architecture.md).
+> Để tìm hiểu chi tiết về cơ chế đọc `/proc/net/tcp` trên Linux kernel, kỹ thuật phân tích `netstat` trên Windows và worker pool concurrency, bạn có thể tham khảo [Tài liệu Kiến trúc](docs/02-technical/architecture.md).
 
 ---
 
