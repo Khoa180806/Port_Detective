@@ -12,7 +12,7 @@ export const translations = {
     },
     // Hero
     hero: {
-      releaseBadge: "Port Detective v1.1.1 Released",
+      releaseBadge: "Port Detective v1.1.2 Released",
       changelog: "Changelog",
       titleLine1: "Stop wrestling with",
       titleLine2: "Investigate & kill ports in 1 second.",
@@ -123,7 +123,7 @@ export const translations = {
       contributing: "Contributing Guide",
       community: "Community",
       githubRepo: "GitHub Repository",
-      releases: "Releases (v1.1.1)",
+      releases: "Releases (v1.1.2)",
       issues: "Report an Issue",
       mitLicense: "MIT License",
       builtWith: "Built with Go. Designed for engineers worldwide.",
@@ -141,7 +141,7 @@ export const translations = {
     },
     // Hero
     hero: {
-      releaseBadge: "Port Detective v1.1.1 đã ra mắt",
+      releaseBadge: "Port Detective v1.1.2 đã ra mắt",
       changelog: "Changelog",
       titleLine1: "Quên đi nỗi ám ảnh",
       titleLine2: "Check và giải phóng port chỉ trong 1 giây.",
@@ -252,7 +252,7 @@ export const translations = {
       contributing: "Hướng dẫn đóng góp",
       community: "Cộng đồng",
       githubRepo: "GitHub Repository",
-      releases: "Bản phát hành (v1.1.1)",
+      releases: "Bản phát hành (v1.1.2)",
       issues: "Báo lỗi & Góp ý (Issues)",
       mitLicense: "Giấy phép MIT",
       builtWith: "Viết bằng Go. Dành cho lập trình viên.",

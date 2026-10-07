@@ -58,7 +58,7 @@ export default async function Image() {
               border: "1px solid rgba(14, 165, 233, 0.3)",
             }}
           >
-            v1.1.1
+            v1.1.2
           </span>
         </div>
 

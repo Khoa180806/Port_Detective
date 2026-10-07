@@ -4,6 +4,17 @@ All notable changes to the Port Detective project are documented in this file, s
 
 ---
 
+## [v1.1.2] — 2026-10-07
+
+### Changed
+- Bumped core CLI application version to `1.1.2`.
+- Refactored entire project documentation into standardized modular folders (`01-overview` through `07-notes`).
+- Reorganized image assets into `docs/assets/` and updated relative links across Markdown documents.
+- Synchronized all documentation links across the landing page navigation and footer.
+*(source: Git commits `5c7cd2f`, `09afa82`, `2c33ad5`)*
+
+---
+
 ## [v1.1.1] — 2026-09-21
 
 ### Changed

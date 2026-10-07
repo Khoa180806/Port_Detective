@@ -8,7 +8,7 @@ Use this template when submitting a bug report for Port Detective CLI or the Web
 A clear and concise description of what the bug is.
 
 ## Environment & System Details
-- **Port Detective Version**: (Run `pd --version`, e.g., `1.1.1`)
+- **Port Detective Version**: (Run `pd --version`, e.g., `1.1.2`)
 - **Operating System**: (Windows 11 / Ubuntu 22.04 / macOS Sonoma)
 - **Architecture**: (x86_64 / arm64 / Apple Silicon)
 - **Terminal Shell**: (bash / zsh / PowerShell / Command Prompt)

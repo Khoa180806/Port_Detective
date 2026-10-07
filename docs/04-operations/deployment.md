@@ -47,7 +47,7 @@ jobs:
 
 ### Release Artifacts Matrix
 
-When a tag (e.g. `v1.1.1`) is pushed, the workflow generates compiled standalone binaries packaged into archives with SHA-256 checksums:
+When a tag (e.g. `v1.1.2`) is pushed, the workflow generates compiled standalone binaries packaged into archives with SHA-256 checksums:
 
 | OS | Architecture | Archive Format | Output Binary |
 | :--- | :--- | :--- | :--- |

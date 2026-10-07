@@ -21,7 +21,7 @@ export function Navbar() {
           <span className="font-semibold text-lg tracking-tight text-white flex items-center gap-2">
             Port Detective
             <span className="rounded-full bg-sky-500/10 px-2 py-0.5 text-xs font-mono font-medium text-sky-400 border border-sky-500/20">
-              v1.1.1
+              v1.1.2
             </span>
           </span>
         </a>

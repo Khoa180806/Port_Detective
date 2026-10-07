@@ -20,7 +20,7 @@ export function Footer() {
               <span className="font-semibold text-base tracking-tight text-white flex items-center gap-2">
                 Port Detective
                 <span className="rounded-full bg-sky-500/10 px-2 py-0.5 text-[10px] font-mono font-medium text-sky-400 border border-sky-500/20">
-                  v1.1.1
+                  v1.1.2
                 </span>
               </span>
             </a>
@@ -101,7 +101,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="https://github.com/Khoa180806/Port_Detective/releases/tag/v1.1.1"
+                  href="https://github.com/Khoa180806/Port_Detective/releases/tag/v1.1.2"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition"
