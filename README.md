@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  🌐 <strong>English</strong> · <a href="README.vi.md">🇻🇳 Tiếng Việt</a> · 🚀 <a href="https://port-detective.vercel.app"><strong>Live Web App</strong></a> · 📖 <a href="docs/cli-reference.md"><strong>Docs</strong></a>
+  🌐 <strong>English</strong> · <a href="README.vi.md">🇻🇳 Tiếng Việt</a> · 🚀 <a href="https://port-detective.vercel.app"><strong>Live Web App</strong></a> · 📖 <a href="docs/README.md"><strong>Docs</strong></a>
 </p>
 
 </div>
@@ -206,21 +206,20 @@ Port Detective leverages Go build tags and the Strategy Pattern for compile-time
 </div>
 
 > [!NOTE]
-> For in-depth technical details on Linux kernel `/proc/net/tcp` parsing, Windows `netstat` strategy, and worker pool concurrency, see the [Architecture Guide](docs/architecture.md).
+> For in-depth technical details on Linux kernel `/proc/net/tcp` parsing, Windows `netstat` strategy, and worker pool concurrency, see the [Architecture Guide](docs/02-technical/architecture.md).
 
 ---
 
-## 📚 Documentation Hub
+## 📚 Documentation
 
-Explore detailed documentation in the [`docs/`](docs/) directory:
+Explore comprehensive technical, operational, and architectural documentation in the [Documentation Hub](docs/README.md):
 
-| Document | Purpose |
-| :--- | :--- |
-| [📐 **System Architecture**](docs/architecture.md) | Component design, Go build tag strategy, and concurrency models |
-| [📖 **CLI Reference Guide**](docs/cli-reference.md) | Comprehensive command flags, syntax specifications, and exit codes |
-| [📦 **Installation Guide**](docs/installation.md) | Package managers, manual binary installs, permissions, and PATH setup |
-| [🤝 **Contributing Guide**](docs/contributing.md) | Development setup, unit test execution, and pull request guidelines |
-| [🗺️ **Project Roadmap**](docs/roadmap.md) | Future vision, feature proposals, and ecosystem expansion plans |
+- [📖 **Documentation Hub (Index)**](docs/README.md) — Complete overview and table of contents.
+- [📐 **Architecture & Design**](docs/02-technical/architecture.md) — System layers, Go build tags, and concurrency models.
+- [💻 **CLI Command Reference**](docs/02-technical/api-reference.md) — Flag details, JSON output schemas, and POSIX exit codes.
+- [🚀 **Getting Started & Installation**](docs/01-overview/getting-started.md) — Prerequisites, build commands, and package scripts.
+- [🤝 **Development Workflow**](docs/01-overview/development-workflow.md) — Branching, Conventional Commits, and test validation.
+- [🗺️ **Product Roadmap**](docs/03-product/roadmap.md) — Shipped features and future ecosystem milestones.
 
 ---
 
