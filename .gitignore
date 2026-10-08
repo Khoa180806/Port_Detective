@@ -1,39 +1,65 @@
 # Binaries
 pd
 pd.exe
+port-detective
+Port_Detective.exe
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-port-detective
 
-# Test binary
+# Test binary & coverage
 *.test
-
-# Output of go coverage tool
 *.out
 
-# Go workspace file
+# Go workspace & dependencies
 go.work
-
-# Dependency directories
 vendor/
 
-# IDE
+# Web frontend & Node.js
+web/node_modules/
+node_modules/
+web/.next/
+.next/
+web/out/
+web/build/
+web/.vercel/
+web/*.tsbuildinfo
+web/next-env.d.ts
+web/AGENTS.md
+web/CLAUDE.md
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE & editors
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
+*.sublime-project
+*.sublime-workspace
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Build output
+# Build output & packaging
 dist/
 build/
+bin/
 
-# Local agent task tracking (kept local, not pushed to remote)
+# Temporary design & local generation tools
+.archify/
+
+# Local task tracking
 tasks/
