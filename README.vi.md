@@ -1,4 +1,4 @@
-# 🔍 Port Detective
+# Port Detective
 
 <div align="center">
 
@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <a href="README.md">🇬🇧 English</a> · 🌐 <strong>Tiếng Việt</strong> · 🚀 <a href="https://port-detective.vercel.app"><strong>Xem Web App</strong></a> · 📖 <a href="docs/cli-reference.md"><strong>Tài liệu Docs</strong></a>
+  <a href="README.md">English</a> · <strong>Tiếng Việt</strong> · <a href="https://port-detective.vercel.app"><strong>Xem Web App</strong></a> · <a href="docs/README.md"><strong>Tài liệu Docs</strong></a>
 </p>
 
 </div>
@@ -27,26 +27,26 @@
 
 ---
 
-## 📑 Mục lục
+## Mục lục
 
-- [⚡ Khởi động nhanh trong 30 giây](#-khởi-động-nhanh-trong-30-giây)
-- [🚀 Tính năng nổi bật](#-tính-năng-nổi-bật)
-- [📦 Hướng dẫn cài đặt](#-hướng-dẫn-cài-đặt)
+- [Khởi động nhanh trong 30 giây](#khởi-động-nhanh-trong-30-giây)
+- [Tính năng nổi bật](#tính-năng-nổi-bật)
+- [Hướng dẫn cài đặt](#hướng-dẫn-cài-đặt)
   - [Cách 1: Script cài đặt tự động (Khuyên dùng)](#cách-1-script-cài-đặt-tự-động-khuyên-dùng)
   - [Cách 2: Cài đặt qua Go Toolchain](#cách-2-cài-đặt-qua-go-toolchain)
   - [Cách 3: Tải file binary trực tiếp từ GitHub Releases](#cách-3-tải-file-binary-trực-tiếp-từ-github-releases)
-- [🛠️ Trải nghiệm các câu lệnh](#️-trải-nghiệm-các-câu-lệnh)
+- [Trải nghiệm các câu lệnh](#trải-nghiệm-các-câu-lệnh)
   - [1. `pd check <port>`](#1-pd-check-port)
   - [2. `pd kill <port>`](#2-pd-kill-port)
   - [3. `pd scan <start-port>-<end-port>`](#3-pd-scan-start-port-end-port)
-- [📐 Sơ đồ kiến trúc hệ thống](#-sơ-đồ-kiến-trúc-hệ-thống)
-- [📚 Trung tâm tài liệu (Documentation Hub)](#-trung-tâm-tài-liệu-documentation-hub)
-- [🚦 Mã thoát chuẩn (POSIX Exit Codes)](#-mã-thoát-chuẩn-posix-exit-codes)
-- [📄 Giấy phép](#-giấy-phép)
+- [Sơ đồ kiến trúc hệ thống](#sơ-đồ-kiến-trúc-hệ-thống)
+- [Trung tâm tài liệu (Documentation Hub)](#trung-tâm-tài-liệu-documentation-hub)
+- [Mã thoát chuẩn (POSIX Exit Codes)](#mã-thoát-chuẩn-posix-exit-codes)
+- [Giấy phép](#giấy-phép)
 
 ---
 
-## ⚡ Khởi động nhanh trong 30 giây
+## Khởi động nhanh trong 30 giây
 
 Bạn gặp lỗi kinh điển `Error: listen EADDRINUSE: address already in use :::8080` khi khởi chạy dev server? Xử lý ngay chỉ với vài thao tác ngắn gọn:
 
@@ -63,21 +63,21 @@ pd kill 8080 --force
 
 ---
 
-## 🚀 Tính năng nổi bật
+## Tính năng nổi bật
 
 | Điểm mạnh | Chi tiết kỹ thuật |
 | :--- | :--- |
-| **🚀 Native Cross-Platform** | Tối ưu chuyên biệt cho từng hệ điều hành: Windows (`netstat`/`tasklist`), Linux (`lsof` với cơ chế fallback đọc `/proc/net`), và macOS (`lsof`). |
-| **⚡ Siêu tốc & Nhẹ** | Không phụ thuộc runtime nặng (không cần Node.js, Python, JVM). Biên dịch thành 1 file nhị phân duy nhất, khởi động trong vài mili-giây. |
-| **🛡️ An toàn mặc định** | Luôn yêu cầu xác nhận trước khi kill (`[y/N]`), hỗ trợ chế độ xem trước an toàn `--dry-run`, bảo vệ tiến trình hệ thống trọng yếu. |
-| **🎨 Giao diện Terminal trực quan** | Bảng hiển thị thông tin rõ ràng, tô màu cú pháp tương phản cao với `fatih/color`. |
-| **🤖 Sẵn sàng cho CI/CD** | Cờ `--json` hỗ trợ đầy đủ trên tất cả câu lệnh, giúp dễ dàng tích hợp vào script bash, PowerShell hoặc lệnh `jq`. |
-| **🌐 Song ngữ tích hợp** | Chuyển đổi linh hoạt giữa tiếng Anh và tiếng Việt (`--lang vi` hoặc biến môi trường `PORT_DETECTIVE_LANG=vi`). |
-| **🔍 Quét dải port tốc độ cao** | Sử dụng worker pool goroutine bất đồng bộ để quét hàng ngàn port trong tích tắc. |
+| **Native Cross-Platform** | Tối ưu chuyên biệt cho từng hệ điều hành: Windows (`netstat`/`tasklist`), Linux (`lsof` với cơ chế fallback đọc `/proc/net`), và macOS (`lsof`). |
+| **Siêu tốc & Nhẹ** | Không phụ thuộc runtime nặng (không cần Node.js, Python, JVM). Biên dịch thành 1 file nhị phân duy nhất, khởi động trong vài mili-giây. |
+| **An toàn mặc định** | Luôn yêu cầu xác nhận trước khi kill (`[y/N]`), hỗ trợ chế độ xem trước an toàn `--dry-run`, bảo vệ tiến trình hệ thống trọng yếu. |
+| **Giao diện Terminal trực quan** | Bảng hiển thị thông tin rõ ràng, tô màu cú pháp tương phản cao với `fatih/color`. |
+| **Sẵn sàng cho CI/CD** | Cờ `--json` hỗ trợ đầy đủ trên tất cả câu lệnh, giúp dễ dàng tích hợp vào script bash, PowerShell hoặc lệnh `jq`. |
+| **Song ngữ tích hợp** | Chuyển đổi linh hoạt giữa tiếng Anh và tiếng Việt (`--lang vi` hoặc biến môi trường `PORT_DETECTIVE_LANG=vi`). |
+| **Quét dải port tốc độ cao** | Sử dụng worker pool goroutine bất đồng bộ để quét hàng ngàn port trong tích tắc. |
 
 ---
 
-## 📦 Hướng dẫn cài đặt
+## Hướng dẫn cài đặt
 
 ### Cách 1: Script cài đặt tự động (Khuyên dùng)
 
@@ -119,7 +119,7 @@ Tải bản phát hành mới nhất từ [GitHub Releases](https://github.com/K
 
 ---
 
-## 🛠️ Trải nghiệm các câu lệnh
+## Trải nghiệm các câu lệnh
 
 ### 1. `pd check <port>`
 Kiểm tra thông tin tiến trình đang chiếm port dạng bảng màu hoặc JSON:
@@ -198,7 +198,7 @@ Found 2 processes:
 
 ---
 
-## 📐 Sơ đồ kiến trúc hệ thống
+## Sơ đồ kiến trúc hệ thống
 
 Port Detective áp dụng Go Build Tags và Strategy Pattern để phân nhánh thực thi đa nền tảng ngay từ lúc biên dịch:
 
@@ -214,21 +214,20 @@ Port Detective áp dụng Go Build Tags và Strategy Pattern để phân nhánh 
 
 ---
 
-## 📚 Trung tâm tài liệu (Documentation Hub)
+## Trung tâm tài liệu (Documentation Hub)
 
-Toàn bộ tài liệu chi tiết được lưu trữ trong thư mục [`docs/`](docs/):
+Toàn bộ tài liệu chi tiết được lưu trữ trong thư mục [docs/](docs/README.md):
 
-| Tài liệu | Nội dung chính |
-| :--- | :--- |
-| [📐 **System Architecture**](docs/architecture.md) | Thiết kế module, cơ chế Go build tags, và mô hình concurrency |
-| [📖 **CLI Reference Guide**](docs/cli-reference.md) | Cú pháp chi tiết các câu lệnh, danh sách flag tham số và mã thoát |
-| [📦 **Installation Guide**](docs/installation.md) | Hướng dẫn cài đặt đa nền tảng, thiết lập quyền hạn và biến PATH |
-| [🤝 **Contributing Guide**](docs/contributing.md) | Môi trường phát triển, chạy unit test và quy trình gửi Pull Request |
-| [🗺️ **Lộ trình phát triển (Roadmap)**](docs/roadmap.md) | Tầm nhìn tương lai, đề xuất tính năng mới và mở rộng hệ sinh thái |
+- [**Documentation Hub (Index)**](docs/README.md) — Tổng quan mục lục toàn bộ tài liệu.
+- [**Kiến trúc hệ thống**](docs/02-technical/architecture.md) — Thiết kế module, cơ chế Go build tags, và mô hình concurrency.
+- [**Cẩm nang tra cứu CLI**](docs/02-technical/api-reference.md) — Cú pháp chi tiết các câu lệnh, danh sách cờ tham số và mã thoát.
+- [**Hướng dẫn cài đặt**](docs/01-overview/getting-started.md) — Hướng dẫn cài đặt đa nền tảng, thiết lập quyền hạn và biến PATH.
+- [**Quy trình phát triển & Đóng góp**](docs/01-overview/development-workflow.md) — Môi trường phát triển, chạy unit test và quy trình gửi Pull Request.
+- [**Lộ trình phát triển (Roadmap)**](docs/03-product/roadmap.md) — Tầm nhìn tương lai, đề xuất tính năng mới và mở rộng hệ sinh thái.
 
 ---
 
-## 🚦 Mã thoát chuẩn (POSIX Exit Codes)
+## Mã thoát chuẩn (POSIX Exit Codes)
 
 | Mã | Trạng thái | Ý nghĩa |
 | :---: | :--- | :--- |
@@ -240,6 +239,6 @@ Toàn bộ tài liệu chi tiết được lưu trữ trong thư mục [`docs/`]
 
 ---
 
-## 📄 Giấy phép
+## Giấy phép
 
 Dự án được phân phối theo giấy phép mã nguồn mở MIT License — xem file [LICENSE](LICENSE) để biết thêm chi tiết.

@@ -4,7 +4,7 @@ Welcome to the official technical and product documentation for **Port Detective
 
 ---
 
-## 📚 Documentation Index
+## Documentation Index
 
 ### 01. Overview
 - [Project Overview](01-overview/project-overview.md) — Problem statement, target developer personas, key capabilities, and technology stack.

@@ -1,4 +1,4 @@
-# 🔍 Port Detective
+# Port Detective
 
 <div align="center">
 
@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  🌐 <strong>English</strong> · <a href="README.vi.md">🇻🇳 Tiếng Việt</a> · 🚀 <a href="https://port-detective.vercel.app"><strong>Live Web App</strong></a> · 📖 <a href="docs/README.md"><strong>Docs</strong></a>
+  <strong>English</strong> · <a href="README.vi.md">Tiếng Việt</a> · <a href="https://port-detective.vercel.app"><strong>Live Web App</strong></a> · <a href="docs/README.md"><strong>Docs</strong></a>
 </p>
 
 </div>
@@ -27,26 +27,26 @@
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [⚡ Quickstart in 30 Seconds](#-quickstart-in-30-seconds)
-- [🚀 Key Features](#-key-features)
-- [📦 Installation Options](#-installation-options)
+- [Quickstart in 30 Seconds](#quickstart-in-30-seconds)
+- [Key Features](#key-features)
+- [Installation Options](#installation-options)
   - [Option 1: Automated Script (Recommended)](#option-1-automated-script-recommended)
   - [Option 2: Go Toolchain](#option-2-go-toolchain)
   - [Option 3: Pre-compiled GitHub Release Binaries](#option-3-pre-compiled-github-release-binaries)
-- [🛠️ Command Showcase](#️-command-showcase)
+- [Command Showcase](#command-showcase)
   - [1. `pd check <port>`](#1-pd-check-port)
   - [2. `pd kill <port>`](#2-pd-kill-port)
   - [3. `pd scan <start-port>-<end-port>`](#3-pd-scan-start-port-end-port)
-- [📐 System Architecture](#-system-architecture)
-- [📚 Documentation Hub](#-documentation-hub)
-- [🚦 POSIX Exit Codes](#-posix-exit-codes)
-- [📄 License](#-license)
+- [System Architecture](#system-architecture)
+- [Documentation](#documentation)
+- [POSIX Exit Codes](#posix-exit-codes)
+- [License](#license)
 
 ---
 
-## ⚡ Quickstart in 30 Seconds
+## Quickstart in 30 Seconds
 
 Tired of `Error: listen EADDRINUSE: address already in use :::8080`? Resolve it immediately with zero guesswork:
 
@@ -63,21 +63,21 @@ pd kill 8080 --force
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 | Capability | Highlights |
 | :--- | :--- |
-| **🚀 Native Cross-Platform** | Native strategy engines for Windows (`netstat`/`tasklist`), Linux (`lsof` with kernel `/proc/net` fallback), and macOS (`lsof`). |
-| **⚡ Blazing Fast** | Zero runtime dependencies (no Node.js, Python, or JVM required). Compiles to a single lightweight native binary. |
-| **🛡️ Safe by Default** | Interactive confirmation prompt (`[y/N]`) before killing, plus `--dry-run` inspection and OS critical PID protection. |
-| **🎨 High-Contrast Terminal UI** | Clean colorized tables with distinct highlights for PID, Process Name, Port, and Protocol. |
-| **🤖 Machine & CI/CD Ready** | Strict `--json` output across all commands for script pipelines and `jq` automation. |
-| **🌐 Bilingual CLI** | Built-in instant switching between English (default) and Vietnamese (`--lang vi` or `PORT_DETECTIVE_LANG=vi`). |
-| **🔍 High-Throughput Range Scanner** | Asynchronous goroutine worker pool scanning up to 5,000 ports in milliseconds. |
+| **Native Cross-Platform** | Native strategy engines for Windows (`netstat`/`tasklist`), Linux (`lsof` with kernel `/proc/net` fallback), and macOS (`lsof`). |
+| **Blazing Fast** | Zero runtime dependencies (no Node.js, Python, or JVM required). Compiles to a single lightweight native binary. |
+| **Safe by Default** | Interactive confirmation prompt (`[y/N]`) before killing, plus `--dry-run` inspection and OS critical PID protection. |
+| **High-Contrast Terminal UI** | Clean colorized tables with distinct highlights for PID, Process Name, Port, and Protocol. |
+| **Machine & CI/CD Ready** | Strict `--json` output across all commands for script pipelines and `jq` automation. |
+| **Bilingual CLI** | Built-in instant switching between English (default) and Vietnamese (`--lang vi` or `PORT_DETECTIVE_LANG=vi`). |
+| **High-Throughput Range Scanner** | Asynchronous goroutine worker pool scanning up to 5,000 ports in milliseconds. |
 
 ---
 
-## 📦 Installation Options
+## Installation Options
 
 ### Option 1: Automated Script (Recommended)
 
@@ -119,7 +119,7 @@ Download directly from [GitHub Releases](https://github.com/Khoa180806/Port_Dete
 
 ---
 
-## 🛠️ Command Showcase
+## Command Showcase
 
 ### 1. `pd check <port>`
 Inspect processes bound to a port in human table format or structured JSON:
@@ -198,7 +198,7 @@ Found 2 processes:
 
 ---
 
-## 📐 System Architecture
+## System Architecture
 
 Port Detective leverages Go build tags and the Strategy Pattern for compile-time cross-platform dispatch:
 
@@ -214,20 +214,20 @@ Port Detective leverages Go build tags and the Strategy Pattern for compile-time
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 Explore comprehensive technical, operational, and architectural documentation in the [Documentation Hub](docs/README.md):
 
-- [📖 **Documentation Hub (Index)**](docs/README.md) — Complete overview and table of contents.
-- [📐 **Architecture & Design**](docs/02-technical/architecture.md) — System layers, Go build tags, and concurrency models.
-- [💻 **CLI Command Reference**](docs/02-technical/api-reference.md) — Flag details, JSON output schemas, and POSIX exit codes.
-- [🚀 **Getting Started & Installation**](docs/01-overview/getting-started.md) — Prerequisites, build commands, and package scripts.
-- [🤝 **Development Workflow**](docs/01-overview/development-workflow.md) — Branching, Conventional Commits, and test validation.
-- [🗺️ **Product Roadmap**](docs/03-product/roadmap.md) — Shipped features and future ecosystem milestones.
+- [**Documentation Hub (Index)**](docs/README.md) — Complete overview and table of contents.
+- [**Architecture & Design**](docs/02-technical/architecture.md) — System layers, Go build tags, and concurrency models.
+- [**CLI Command Reference**](docs/02-technical/api-reference.md) — Flag details, JSON output schemas, and POSIX exit codes.
+- [**Getting Started & Installation**](docs/01-overview/getting-started.md) — Prerequisites, build commands, and package scripts.
+- [**Development Workflow**](docs/01-overview/development-workflow.md) — Branching, Conventional Commits, and test validation.
+- [**Product Roadmap**](docs/03-product/roadmap.md) — Shipped features and future ecosystem milestones.
 
 ---
 
-## 🚦 POSIX Exit Codes
+## POSIX Exit Codes
 
 | Code | Status | Meaning |
 | :---: | :--- | :--- |
@@ -239,6 +239,6 @@ Explore comprehensive technical, operational, and architectural documentation in
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
